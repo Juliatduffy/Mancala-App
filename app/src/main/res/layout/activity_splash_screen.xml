@@ -6,6 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/background"
+    android:background="@drawable/brown_background"
     tools:context=".SplashScreen">
 </androidx.constraintlayout.widget.ConstraintLayout>

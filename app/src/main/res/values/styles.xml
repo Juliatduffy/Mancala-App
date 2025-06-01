@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PitStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">7dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/hole</item>
+        <item name="android:contentDescription">Pit</item>
+    </style>
+
+</resources>

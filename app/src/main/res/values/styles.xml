@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="PitStyle" parent="Widget.MaterialComponents.Button">
+    <style name="holeTop" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:paddingLeft">7dp</item>
@@ -12,7 +12,7 @@
         <item name="android:src">@drawable/hole</item>
         <item name="android:contentDescription">Pit</item>
     </style>
-    <style name="PitStyleBottom" parent="Widget.MaterialComponents.Button">
+    <style name="holeBottom" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:paddingLeft">7dp</item>

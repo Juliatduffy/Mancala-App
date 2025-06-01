@@ -38,7 +38,7 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
+        android:layout_margin="40dp"
         android:text="MANCALA"
         android:textColor="#fff7c2"
         android:textSize="65sp"

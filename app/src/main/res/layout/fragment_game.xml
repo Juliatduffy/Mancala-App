@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/brown_background">
 
+    <!-- Board image in the background (no holes) -->
     <ImageView
         android:id="@+id/boardImage"
         android:layout_width="0dp"
@@ -15,12 +16,12 @@
         android:scaleType="fitXY"
         android:src="@drawable/board"
         android:background="@null"
-        android:layout_margin="0dp"
         app:layout_constraintStart_toStartOf="@id/col1"
         app:layout_constraintEnd_toEndOf="@id/col9"
         app:layout_constraintTop_toTopOf="@id/guide_top_row"
         app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
 
+    <!-- Horizontal guidelines -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_top_row"
         android:layout_width="wrap_content"
@@ -42,67 +43,778 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.82" />
 
-    <!-- Vertical guidelines: 11 total (2 spacers, 2 stores, 6 pits, 1 more spacer) -->
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col0" app:layout_constraintGuide_percent="0.00" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col1" app:layout_constraintGuide_percent="0.05" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col2" app:layout_constraintGuide_percent="0.17" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col3" app:layout_constraintGuide_percent="0.28" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col4" app:layout_constraintGuide_percent="0.39" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col5" app:layout_constraintGuide_percent="0.50" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col6" app:layout_constraintGuide_percent="0.61" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col7" app:layout_constraintGuide_percent="0.72" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col8" app:layout_constraintGuide_percent="0.83" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col9" app:layout_constraintGuide_percent="0.95" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
-    <androidx.constraintlayout.widget.Guideline android:id="@+id/col10" app:layout_constraintGuide_percent="1.0" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0dp" />
+    <!-- Vertical guidelines (0% through 100%) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col0"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.00" />
 
-    <!-- Left store -->
-    <ImageButton
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.17" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.28" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.39" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col5"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col6"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.61" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col7"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col8"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.83" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col9"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/col10"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.00" />
+
+    <!-- Inset guidelines for LEFT STORE (moved in slightly) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_left_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_left_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_left_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.19" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_left_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.81" />
+
+    <!-- Inset guidelines for RIGHT STORE (moved in slightly) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_right_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.84" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_right_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.93" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_right_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.19" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/store_right_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.81" />
+
+    <!-- LEFT STORE as FrameLayout -->
+    <FrameLayout
         android:id="@+id/store_left"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="left store"
-        android:background="@android:color/transparent"
-        android:src="@drawable/long_hole"
-        android:scaleType="fitXY"
-        android:paddingLeft="20dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="40dp"
-        app:layout_constraintTop_toTopOf="@id/guide_top_row"
-        app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row"
-        app:layout_constraintStart_toStartOf="@id/col1"
-        app:layout_constraintEnd_toStartOf="@id/col2" />
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingTop="20dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintStart_toStartOf="@id/store_left_left"
+        app:layout_constraintEnd_toStartOf="@id/store_left_right"
+        app:layout_constraintTop_toTopOf="@id/store_left_top"
+        app:layout_constraintBottom_toBottomOf="@id/store_left_bottom">
 
-    <!-- Right store -->
-    <ImageButton
+        <!-- Long-hole graphic at back -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/long_hole"
+            android:scaleType="fitXY"
+            android:background="@null" />
+        <!-- At runtime, you’ll add marble ImageViews here -->
+    </FrameLayout>
+
+    <!-- RIGHT STORE as FrameLayout -->
+    <FrameLayout
         android:id="@+id/store_right"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="right store"
-        android:scaleType="fitXY"
-        android:paddingRight="20dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="40dp"
-        android:src="@drawable/long_hole"
-        app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row"
-        app:layout_constraintEnd_toStartOf="@id/col9"
-        app:layout_constraintStart_toStartOf="@id/col8"
-        app:layout_constraintTop_toTopOf="@id/guide_top_row" />
+        android:clickable="true"
+        android:paddingTop="20dp"
+        android:paddingBottom="30dp"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/store_right_left"
+        app:layout_constraintEnd_toStartOf="@id/store_right_right"
+        app:layout_constraintTop_toTopOf="@id/store_right_top"
+        app:layout_constraintBottom_toBottomOf="@id/store_right_bottom">
 
-    <!-- Top row: pits 0–5 -->
-    <ImageButton android:id="@+id/pit0" style="@style/PitStyle" app:layout_constraintStart_toStartOf="@id/col2" app:layout_constraintEnd_toStartOf="@id/col3" app:layout_constraintTop_toTopOf="@id/guide_top_row" app:layout_constraintBottom_toBottomOf="@id/guide_mid_row" />
-    <ImageButton android:id="@+id/pit1" style="@style/PitStyle" app:layout_constraintStart_toStartOf="@id/col3" app:layout_constraintEnd_toStartOf="@id/col4" app:layout_constraintTop_toTopOf="@id/guide_top_row" app:layout_constraintBottom_toBottomOf="@id/guide_mid_row" />
-    <ImageButton android:id="@+id/pit2" style="@style/PitStyle" app:layout_constraintStart_toStartOf="@id/col4" app:layout_constraintEnd_toStartOf="@id/col5" app:layout_constraintTop_toTopOf="@id/guide_top_row" app:layout_constraintBottom_toBottomOf="@id/guide_mid_row" />
-    <ImageButton android:id="@+id/pit3" style="@style/PitStyle" app:layout_constraintStart_toStartOf="@id/col5" app:layout_constraintEnd_toStartOf="@id/col6" app:layout_constraintTop_toTopOf="@id/guide_top_row" app:layout_constraintBottom_toBottomOf="@id/guide_mid_row" />
-    <ImageButton android:id="@+id/pit4" style="@style/PitStyle" app:layout_constraintStart_toStartOf="@id/col6" app:layout_constraintEnd_toStartOf="@id/col7" app:layout_constraintTop_toTopOf="@id/guide_top_row" app:layout_constraintBottom_toBottomOf="@id/guide_mid_row" />
-    <ImageButton android:id="@+id/pit5" style="@style/PitStyle" app:layout_constraintStart_toStartOf="@id/col7" app:layout_constraintEnd_toStartOf="@id/col8" app:layout_constraintTop_toTopOf="@id/guide_top_row" app:layout_constraintBottom_toBottomOf="@id/guide_mid_row" />
+        <!-- Long-hole graphic at back -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/long_hole"
+            android:scaleType="fitXY"
+            android:background="@null" />
+        <!-- At runtime, you’ll add marble ImageViews here -->
+    </FrameLayout>
 
-    <!-- Bottom row: pits 6–11 -->
-    <ImageButton android:id="@+id/pit6" style="@style/PitStyleBottom" app:layout_constraintStart_toStartOf="@id/col7" app:layout_constraintEnd_toStartOf="@id/col8" app:layout_constraintTop_toTopOf="@id/guide_mid_row" app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
-    <ImageButton android:id="@+id/pit7" style="@style/PitStyleBottom" app:layout_constraintStart_toStartOf="@id/col6" app:layout_constraintEnd_toStartOf="@id/col7" app:layout_constraintTop_toTopOf="@id/guide_mid_row" app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
-    <ImageButton android:id="@+id/pit8" style="@style/PitStyleBottom" app:layout_constraintStart_toStartOf="@id/col5" app:layout_constraintEnd_toStartOf="@id/col6" app:layout_constraintTop_toTopOf="@id/guide_mid_row" app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
-    <ImageButton android:id="@+id/pit9" style="@style/PitStyleBottom" app:layout_constraintStart_toStartOf="@id/col4" app:layout_constraintEnd_toStartOf="@id/col5" app:layout_constraintTop_toTopOf="@id/guide_mid_row" app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
-    <ImageButton android:id="@+id/pit10" style="@style/PitStyleBottom" app:layout_constraintStart_toStartOf="@id/col3" app:layout_constraintEnd_toStartOf="@id/col4" app:layout_constraintTop_toTopOf="@id/guide_mid_row" app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
-    <ImageButton android:id="@+id/pit11" style="@style/PitStyleBottom" app:layout_constraintStart_toStartOf="@id/col2" app:layout_constraintEnd_toStartOf="@id/col3" app:layout_constraintTop_toTopOf="@id/guide_mid_row" app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
+    <!-- Inset guidelines for PIT 0 (between col2 & col3, top & mid) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit0_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit0_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit0_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit0_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <!-- PIT 0 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit0_left"
+        app:layout_constraintEnd_toStartOf="@id/pit0_right"
+        app:layout_constraintTop_toTopOf="@id/pit0_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit0_bottom">
+
+        <!-- Hole graphic -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+        <!-- Marbles get added programmatically -->
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 1 (between col3 & col4, top & mid) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit1_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.29" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit1_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit1_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit1_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <!-- PIT 1 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit1_left"
+        app:layout_constraintEnd_toStartOf="@id/pit1_right"
+        app:layout_constraintTop_toTopOf="@id/pit1_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit1_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 2 (between col4 & col5, top & mid) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit2_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit2_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.49" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit2_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit2_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <!-- PIT 2 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit2_left"
+        app:layout_constraintEnd_toStartOf="@id/pit2_right"
+        app:layout_constraintTop_toTopOf="@id/pit2_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit2_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 3 (between col5 & col6, top & mid) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit3_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.51" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit3_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.60" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit3_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit3_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <!-- PIT 3 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit3_left"
+        app:layout_constraintEnd_toStartOf="@id/pit3_right"
+        app:layout_constraintTop_toTopOf="@id/pit3_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit3_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 4 (between col6 & col7, top & mid) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit4_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.62" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit4_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit4_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit4_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <!-- PIT 4 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit4_left"
+        app:layout_constraintEnd_toStartOf="@id/pit4_right"
+        app:layout_constraintTop_toTopOf="@id/pit4_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit4_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 5 (between col7 & col8, top & mid) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit5_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.73" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit5_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.82" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit5_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit5_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <!-- PIT 5 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit5_left"
+        app:layout_constraintEnd_toStartOf="@id/pit5_right"
+        app:layout_constraintTop_toTopOf="@id/pit5_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit5_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 6 (between col7 & col8, mid & bottom)—moved up to .52/.76 -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit6_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.73" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit6_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.82" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit6_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit6_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- PIT 6 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit6_left"
+        app:layout_constraintEnd_toStartOf="@id/pit6_right"
+        app:layout_constraintTop_toTopOf="@id/pit6_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit6_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 7 (between col6 & col7, mid & bottom)—moved up -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit7_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.62" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit7_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit7_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit7_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- PIT 7 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit7_left"
+        app:layout_constraintEnd_toStartOf="@id/pit7_right"
+        app:layout_constraintTop_toTopOf="@id/pit7_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit7_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 8 (between col5 & col6, mid & bottom)—moved up -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit8_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.51" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit8_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.60" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit8_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit8_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- PIT 8 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit8_left"
+        app:layout_constraintEnd_toStartOf="@id/pit8_right"
+        app:layout_constraintTop_toTopOf="@id/pit8_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit8_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 9 (between col4 & col5, mid & bottom)—moved up -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit9_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit9_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.49" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit9_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit9_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- PIT 9 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit9_left"
+        app:layout_constraintEnd_toStartOf="@id/pit9_right"
+        app:layout_constraintTop_toTopOf="@id/pit9_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit9_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 10 (between col3 & col4, mid & bottom)—moved up -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit10_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.29" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit10_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit10_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit10_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- PIT 10 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit10"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit10_left"
+        app:layout_constraintEnd_toStartOf="@id/pit10_right"
+        app:layout_constraintTop_toTopOf="@id/pit10_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit10_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Inset guidelines for PIT 11 (between col2 & col3, mid & bottom)—moved up -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit11_left"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit11_right"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit11_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/pit11_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <!-- PIT 11 as FrameLayout -->
+    <FrameLayout
+        android:id="@+id/pit11"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="@id/pit11_left"
+        app:layout_constraintEnd_toStartOf="@id/pit11_right"
+        app:layout_constraintTop_toTopOf="@id/pit11_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit11_bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hole"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- Home screen -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mancala.HomeFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_home_to_game"
+            app:destination="@id/gameFragment" />
+    </fragment>
+
+    <!-- Game screen -->
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.mancala.GameFragment"
+        android:label="Game"
+        />
+    <argument
+        android:name="difficulty"
+        android:defaultValue="easy"
+        app:argType="string" />
+</navigation>

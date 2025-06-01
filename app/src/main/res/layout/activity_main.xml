@@ -2,140 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    app:layout_constraintGuide_end="80dp"
-    android:background="@drawable/back"
-    android:id="@+id/main"
-    tools:context=".MainActivity">
+    android:background="@drawable/back">
 
-    <ImageButton
-        android:id="@+id/settingsButton"
-        android:contentDescription="settings"
-        android:layout_width="53dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:scaleType="centerInside"
-        android:src="@drawable/settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/helpButton"
-        android:layout_width="58dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="80dp"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="Help"
-        android:src="@drawable/question"
-        android:scaleType="centerInside"
+    <!-- NavHostFragment: Navigation Component will inflate HomeFragment here first,
+         then swap in GameFragment when the user navigates. -->
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MANCALA"
-        android:textSize="65sp"
-        android:textStyle="bold"
-        android:textColor="#fff7c2"
-        android:fontFamily="@font/averia_serif_libre"
-        app:layout_constraintTop_toBottomOf="@id/settingsButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingBottom="50dp"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/easyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Easy"
-        android:textColor="#fff7c2"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:fontFamily="serif"
-        app:cornerRadius="12dp"
-        app:strokeWidth="5dp"
-        app:strokeColor="#fff7c2"
-        app:backgroundTint="@color/colors"
-        android:paddingTop="25dp"
-        android:paddingBottom="25dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/mediumButton"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mediumButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Medium"
-        android:textColor="#fff7c2"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:fontFamily="serif"
-        app:cornerRadius="12dp"
-        app:strokeWidth="5dp"
-        app:strokeColor="#fff7c2"
-        app:backgroundTint="@color/colors"
-        android:paddingTop="25dp"
-        android:paddingBottom="25dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"        app:layout_constraintTop_toBottomOf="@id/titleText"
-        app:layout_constraintStart_toEndOf="@id/easyButton"
-        app:layout_constraintEnd_toStartOf="@id/hardButton"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/hardButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hard"
-        android:textColor="#fff7c2"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:fontFamily="serif"
-        app:cornerRadius="12dp"
-        app:strokeWidth="5dp"
-        app:strokeColor="#fff7c2"
-        app:backgroundTint="@color/colors"
-        android:paddingTop="25dp"
-        android:paddingBottom="25dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
-        app:layout_constraintStart_toEndOf="@id/mediumButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="80dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

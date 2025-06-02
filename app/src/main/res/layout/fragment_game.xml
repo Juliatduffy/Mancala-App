@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/brown_background">
 
+    <!-- Board image in the background -->
     <ImageView
         android:id="@+id/boardImage"
         android:layout_width="0dp"
@@ -20,6 +21,7 @@
         app:layout_constraintTop_toTopOf="@id/guide_top_row"
         app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row" />
 
+    <!-- Horizontal guidelines for rows -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_top_row"
         android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.82" />
 
+    <!-- Vertical guidelines for columns -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/col0"
         android:layout_width="wrap_content"
@@ -118,6 +121,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="1.00" />
 
+    <!-- Store (left) becomes pit13 -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_left_left"
         android:layout_width="wrap_content"
@@ -146,6 +150,27 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.81" />
 
+    <FrameLayout
+        android:id="@+id/pit13"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingTop="20dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintStart_toStartOf="@id/store_left_left"
+        app:layout_constraintEnd_toStartOf="@id/store_left_right"
+        app:layout_constraintTop_toTopOf="@id/store_left_top"
+        app:layout_constraintBottom_toBottomOf="@id/store_left_bottom">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/long_hole"
+            android:scaleType="fitXY"
+            android:background="@null" />
+    </FrameLayout>
+
+    <!-- Store (right) becomes pit6 -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_right_left"
         android:layout_width="wrap_content"
@@ -175,27 +200,7 @@
         app:layout_constraintGuide_percent="0.81" />
 
     <FrameLayout
-        android:id="@+id/store_left"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:paddingTop="20dp"
-        android:paddingBottom="30dp"
-        app:layout_constraintStart_toStartOf="@id/store_left_left"
-        app:layout_constraintEnd_toStartOf="@id/store_left_right"
-        app:layout_constraintTop_toTopOf="@id/store_left_top"
-        app:layout_constraintBottom_toBottomOf="@id/store_left_bottom">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/long_hole"
-            android:scaleType="fitXY"
-            android:background="@null" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/store_right"
+        android:id="@+id/pit6"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -214,6 +219,11 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- ──────────────────────────────────────────────────────────────────── -->
+    <!-- TOP ROW PITS (left to right stay pit12…pit7)  -->
+    <!-- ──────────────────────────────────────────────────────────────────── -->
+
+    <!-- Top‐row pit12 (leftmost top) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit0_left"
         android:layout_width="wrap_content"
@@ -260,6 +270,7 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Top‐row pit11 -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit1_left"
         android:layout_width="wrap_content"
@@ -306,6 +317,7 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Top‐row pit10 -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit2_left"
         android:layout_width="wrap_content"
@@ -352,6 +364,7 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Top‐row pit9 -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit3_left"
         android:layout_width="wrap_content"
@@ -398,6 +411,7 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Top‐row pit8 -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit4_left"
         android:layout_width="wrap_content"
@@ -444,6 +458,7 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Top‐row pit7 (rightmost top) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit5_left"
         android:layout_width="wrap_content"
@@ -490,19 +505,24 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- ──────────────────────────────────────────────────────────────────── -->
+    <!-- BOTTOM ROW PITS (left to right become pit0…pit5)  -->
+    <!-- ──────────────────────────────────────────────────────────────────── -->
+
+    <!-- Bottom‐row pit0 (originally pit1) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit6_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.73" />
+        app:layout_constraintGuide_percent="0.18" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit6_right"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.82" />
+        app:layout_constraintGuide_percent="0.27" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit6_top"
@@ -519,7 +539,7 @@
         app:layout_constraintGuide_percent="0.76" />
 
     <FrameLayout
-        android:id="@+id/pit6"
+        android:id="@+id/pit0"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -536,19 +556,20 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Bottom‐row pit1 (originally pit2) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit7_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.62" />
+        app:layout_constraintGuide_percent="0.29" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit7_right"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.71" />
+        app:layout_constraintGuide_percent="0.38" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit7_top"
@@ -565,7 +586,7 @@
         app:layout_constraintGuide_percent="0.76" />
 
     <FrameLayout
-        android:id="@+id/pit5"
+        android:id="@+id/pit1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -582,19 +603,20 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Bottom‐row pit2 (originally pit3) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit8_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.51" />
+        app:layout_constraintGuide_percent="0.40" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit8_right"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintGuide_percent="0.49" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit8_top"
@@ -611,7 +633,7 @@
         app:layout_constraintGuide_percent="0.76" />
 
     <FrameLayout
-        android:id="@+id/pit4"
+        android:id="@+id/pit2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -628,19 +650,20 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Bottom‐row pit3 (originally pit4) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit9_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.40" />
+        app:layout_constraintGuide_percent="0.51" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit9_right"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.49" />
+        app:layout_constraintGuide_percent="0.60" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit9_top"
@@ -674,19 +697,20 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Bottom‐row pit4 (originally pit5) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit10_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.29" />
+        app:layout_constraintGuide_percent="0.62" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit10_right"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.38" />
+        app:layout_constraintGuide_percent="0.71" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit10_top"
@@ -703,7 +727,7 @@
         app:layout_constraintGuide_percent="0.76" />
 
     <FrameLayout
-        android:id="@+id/pit2"
+        android:id="@+id/pit4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -720,19 +744,20 @@
             android:background="@null" />
     </FrameLayout>
 
+    <!-- Bottom‐row pit5 (originally pit6) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit11_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.18" />
+        app:layout_constraintGuide_percent="0.73" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit11_right"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.27" />
+        app:layout_constraintGuide_percent="0.82" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit11_top"
@@ -749,7 +774,7 @@
         app:layout_constraintGuide_percent="0.76" />
 
     <FrameLayout
-        android:id="@+id/pit1"
+        android:id="@+id/pit5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"

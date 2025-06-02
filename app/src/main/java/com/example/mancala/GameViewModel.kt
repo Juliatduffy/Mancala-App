@@ -34,30 +34,42 @@ class GameViewModel : ViewModel() {
 
     Things that need to be returned by this method:
     */
-    fun playerMove(hole: Int) {
+    fun move(hole: Int) {
         // check, then set moveInProgress to prohibit user interaction
         if (moveInProgress.value) return
         else moveInProgress.value = true
         // Num marbles in hole that was clicked on
         val initMarbleCount = marbles.value[hole]
+        // TODO try to remove this check
+        if (initMarbleCount == 0) {
+            moveInProgress.value = false
+            return
+        }
         // Num marbles left to distribute
         var currMarbleCount = initMarbleCount
         // Mutable copy of list of marble counts
         val marblesCopy = marbles.value.toMutableList()
         // Hole we are currently updating
         var holeToUpdate = (hole + 1) % 14
-        // boolean to award extra turns
-        var extraTurn = false
 
         viewModelScope.launch {
             // play single marble animations
             while (currMarbleCount > 1) {
-                // skip computer's store
-                if (holeToUpdate == 13) holeToUpdate = 0
+                // on player turn, skip computer store
+                if (currentPlayer.value == 0 && holeToUpdate == 13) holeToUpdate = 0
+                // on computer turn skip player store
+                else if (currentPlayer.value == 1 && holeToUpdate == 6) holeToUpdate = 7
+
                 // signal animation to move marble from one hole to another
                 moveMarbleEvent.emit(hole to holeToUpdate)
                 // allow time to play the animation
                 delay(300)
+
+                // update player score
+                if (holeToUpdate == 6) playerScore.value++
+                // update computer score
+                else if (holeToUpdate == 13) computerScore.value++
+
                 // increment next hole
                 marblesCopy[holeToUpdate]++
                 // decrement starting hole
@@ -71,9 +83,11 @@ class GameViewModel : ViewModel() {
             }
 
             // on player turn, skip computer store
-            if (holeToUpdate == 13) holeToUpdate = 0
+            if (currentPlayer.value == 0 && holeToUpdate == 13) holeToUpdate = 0
+            // on computer turn skip player store
+            if (currentPlayer.value == 1 && holeToUpdate == 6) holeToUpdate = 7
 
-            // if last marble goes in player store, award extra turn
+            // if last marble goes in player store, award extra turn and points WE KNOW it is player turn bc of prev statement
             if (holeToUpdate == 6) {
 
                 // animation
@@ -90,9 +104,25 @@ class GameViewModel : ViewModel() {
                 moveInProgress.value = false
                 return@launch
             }
+            // update computer store WE KNOW it is computer turn bc of above statement
+            else if (holeToUpdate == 13) {
+                // animation
+                moveMarbleEvent.emit(hole to holeToUpdate)
+                delay(300)
+
+                // game state
+                marblesCopy[hole]--
+                marblesCopy[holeToUpdate]++
+                marbles.value = marblesCopy.toList()
+                computerScore.value += 1
+
+                // extra turn awarded (don't switch currPlayer)
+                moveInProgress.value = false
+                return@launch
+            }
 
             // Check if it is a capture
-            else if (holeToUpdate in 0..5) {
+            else if (holeToUpdate in 0..5 && currentPlayer.value == 0) {
                 val oppositeHole =  12 - holeToUpdate
 
                 // if opposite hole has marbles, play capture animation
@@ -109,8 +139,31 @@ class GameViewModel : ViewModel() {
                 marblesCopy[oppositeHole] = 0
                 marbles.value = marblesCopy
 
-                // switch to the computer's turn
+                // switch to next player
                 currentPlayer.value = 1
+                moveInProgress.value = false
+                return@launch
+            }
+
+            else if (holeToUpdate in 7..12 && currentPlayer.value == 1) {
+                val oppositeHole =  12 - holeToUpdate
+
+                // if opposite hole has marbles, play capture animation
+                if (marblesCopy[oppositeHole] > 0) {
+                    playerCaptureEvent.emit(holeToUpdate to oppositeHole)
+                    delay(300)
+                }
+
+                // update game stats
+                val capturedCount = 1 + marblesCopy[oppositeHole]
+                computerScore.value += capturedCount
+                marblesCopy[hole]--
+                marblesCopy[holeToUpdate] = 0
+                marblesCopy[oppositeHole] = 0
+                marbles.value = marblesCopy
+
+                // switch to next player
+                currentPlayer.value = 0
                 moveInProgress.value = false
                 return@launch
             }
@@ -120,18 +173,21 @@ class GameViewModel : ViewModel() {
                 delay(200)
 
                 // update game state
+                if (currentPlayer.value == 0 && holeToUpdate == 6) playerScore.value++
+                if (currentPlayer.value == 1 && holeToUpdate == 13) computerScore.value++
                 marblesCopy[hole]--
                 marblesCopy[holeToUpdate]++
                 marbles.value = marblesCopy.toList()
 
-                // switch to computer's turn
-                currentPlayer.value = 1
+                // switch to next player
+                if (currentPlayer.value == 1) currentPlayer.value = 0
+                else currentPlayer.value = 1
                 moveInProgress.value = false
                 return@launch
             }
         }
     }
-    
+
     fun calculateComputerMove() {
         // call method in another class to get the next computer move
     }

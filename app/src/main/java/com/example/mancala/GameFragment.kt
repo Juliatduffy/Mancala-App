@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
+// Front end stuff for the game
 class GameFragment : Fragment() {
 
     companion object {

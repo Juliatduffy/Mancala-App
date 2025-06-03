@@ -1,5 +1,6 @@
 package com.example.mancala
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -7,18 +8,19 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
+
 // Store the position of marbles, scores, and game state for persistence
 class GameViewModel : ViewModel() {
 
     val playerScore = MutableStateFlow<Int>(0)
     val computerScore = MutableStateFlow<Int>(0)
-    val marbles = MutableStateFlow<List<Int>>(listOf(4,4,4,4,4,4, 4,4,4,4,4,4))
+    val marbles = MutableStateFlow<List<Int>>(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
     val isPlaying = MutableStateFlow<Boolean>(false)
     val currentPlayer = MutableStateFlow<Int>(0) // 0 is player 1 is computer
     val gameMode = MutableStateFlow<Int>(0) // 0 is easy 1 is med 2 is hard
     private val moveMarbleEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
     private val playerCaptureEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
-    private val moveInProgress = MutableStateFlow(false)
+    val moveInProgress = MutableStateFlow(false)
 
     // could add who plays first here eventually
     fun startGame(gameMode: String){
@@ -188,12 +190,23 @@ class GameViewModel : ViewModel() {
         }
     }
 
-    fun calculateComputerMove() {
-        // call method in another class to get the next computer move
+    fun calculateComputerMove() : Int {
+        return when (gameMode.value) {
+            0 -> ComputerPlayer.easy(marbles.value)
+            1 -> 7
+            2 -> 7
+            else -> 7
+        }
     }
 
-    // for debugging
-    fun logBoardState(){
+    fun logBoardState(tag: String = "GameViewModel") {
+        // Grab the current lists and values
+        val board = marbles.value
+        val pScore = playerScore.value
+        val cScore = computerScore.value
+        val turn   = if (currentPlayer.value == 0) "PLAYER" else "COMPUTER"
 
+        // Format a single line: “Board: [4,4,4,4,4,4,4,4,4,4,4,4,4,4] | P=0 | C=0 | Turn=PLAYER”
+        Log.d(tag, "Board: $board | P=$pScore | C=$cScore | Turn=$turn")
     }
 }

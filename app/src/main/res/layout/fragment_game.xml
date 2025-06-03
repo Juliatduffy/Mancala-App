@@ -7,6 +7,29 @@
     android:layout_height="match_parent"
     android:background="@drawable/brown_background">
 
+    <EditText
+        android:id="@+id/editPitIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Pit (0–12)"
+        android:inputType="number"
+        android:padding="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSubmitMove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Move"
+        android:padding="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/editPitIndex" />
+
     <!-- Board image in the background -->
     <ImageView
         android:id="@+id/boardImage"

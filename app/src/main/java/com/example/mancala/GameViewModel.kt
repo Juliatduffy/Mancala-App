@@ -6,21 +6,37 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
 // Store the position of marbles, scores, and game state for persistence
 class GameViewModel : ViewModel() {
 
-    val playerScore = MutableStateFlow<Int>(0)
-    val computerScore = MutableStateFlow<Int>(0)
-    val marbles = MutableStateFlow<List<Int>>(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
-    val isPlaying = MutableStateFlow<Boolean>(false)
-    val currentPlayer = MutableStateFlow<Int>(0) // 0 is player 1 is computer
-    val gameMode = MutableStateFlow<Int>(0) // 0 is easy 1 is med 2 is hard
-    private val moveMarbleEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
-    private val playerCaptureEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
-    val moveInProgress = MutableStateFlow(false)
+    private val _playerScore = MutableStateFlow(0)
+    val playerScore: StateFlow<Int> get() = _playerScore
+
+    private val _computerScore = MutableStateFlow(0)
+    val computerScore: StateFlow<Int> get() = _computerScore
+
+    private val _moveMarbleEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
+    val moveMarbleEvent: SharedFlow<Pair<Int, Int>> get() = _moveMarbleEvent
+
+    private val _playerCaptureEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
+    val playerCaptureEvent: SharedFlow<Pair<Int,Int>> get() = _playerCaptureEvent
+
+    private val _moveInProgress = MutableStateFlow(false)
+    val moveInProgress: StateFlow<Boolean> get() = _moveInProgress
+
+    private val _marbles = MutableStateFlow<List<Int>>(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
+    val marbles: StateFlow<List<Int>> get() = _marbles
+
+    private val _currentPlayer = MutableStateFlow(0)
+    val currentPlayer: StateFlow<Int> get() = _currentPlayer
+
+    private val _gameMode = MutableStateFlow(0)
+    val gameMode: StateFlow<Int> get() = _gameMode
 
     // could add who plays first here eventually
     fun startGame(gameMode: String){
@@ -37,14 +53,20 @@ class GameViewModel : ViewModel() {
     Things that need to be returned by this method:
     */
     fun move(hole: Int) {
+
+        val actualHole = if (currentPlayer.value == 1) {
+            calculateComputerMove()
+        } else {
+            hole
+        }
         // check, then set moveInProgress to prohibit user interaction
         if (moveInProgress.value) return
-        else moveInProgress.value = true
+        else _moveInProgress.value = true
         // Num marbles in hole that was clicked on
-        val initMarbleCount = marbles.value[hole]
+        val initMarbleCount = marbles.value[actualHole]
         // TODO try to remove this check
         if (initMarbleCount == 0) {
-            moveInProgress.value = false
+            _moveInProgress.value = false
             return
         }
         // Num marbles left to distribute
@@ -52,7 +74,7 @@ class GameViewModel : ViewModel() {
         // Mutable copy of list of marble counts
         val marblesCopy = marbles.value.toMutableList()
         // Hole we are currently updating
-        var holeToUpdate = (hole + 1) % 14
+        var holeToUpdate = (actualHole + 1) % 14
 
         viewModelScope.launch {
             // play single marble animations
@@ -63,23 +85,23 @@ class GameViewModel : ViewModel() {
                 else if (currentPlayer.value == 1 && holeToUpdate == 6) holeToUpdate = 7
 
                 // signal animation to move marble from one hole to another
-                moveMarbleEvent.emit(hole to holeToUpdate)
+                _moveMarbleEvent.emit(actualHole to holeToUpdate)
                 // allow time to play the animation
-                delay(300)
+                //delay(300)
 
                 // update player score
-                if (holeToUpdate == 6) playerScore.value++
+                if (holeToUpdate == 6) _playerScore.value++
                 // update computer score
-                else if (holeToUpdate == 13) computerScore.value++
+                else if (holeToUpdate == 13) _computerScore.value++
 
                 // increment next hole
                 marblesCopy[holeToUpdate]++
                 // decrement starting hole
-                marblesCopy[hole]--
+                marblesCopy[actualHole]--
                 // decrement marble count
                 currMarbleCount--
                 // update game stats
-                marbles.value = marblesCopy.toList()
+                _marbles.value = marblesCopy.toList()
                 // calculate hole to update
                 holeToUpdate = (holeToUpdate + 1) % 14
             }
@@ -93,120 +115,121 @@ class GameViewModel : ViewModel() {
             if (holeToUpdate == 6) {
 
                 // animation
-                moveMarbleEvent.emit(hole to holeToUpdate)
-                delay(300)
+                _moveMarbleEvent.emit(actualHole to holeToUpdate)
+                //delay(300)
 
                 // game state
-                marblesCopy[hole]--
+                marblesCopy[actualHole]--
                 marblesCopy[holeToUpdate]++
-                marbles.value = marblesCopy.toList()
-                playerScore.value += 1
+                _marbles.value = marblesCopy.toList()
+                _playerScore.value += 1
 
                 // extra turn awarded (don't switch currPlayer)
-                moveInProgress.value = false
+                _moveInProgress.value = false
                 return@launch
             }
             // update computer store WE KNOW it is computer turn bc of above statement
             else if (holeToUpdate == 13) {
                 // animation
-                moveMarbleEvent.emit(hole to holeToUpdate)
-                delay(300)
+                _moveMarbleEvent.emit(actualHole to holeToUpdate)
+                //delay(300)
 
                 // game state
-                marblesCopy[hole]--
+                marblesCopy[actualHole]--
                 marblesCopy[holeToUpdate]++
-                marbles.value = marblesCopy.toList()
-                computerScore.value += 1
+                _marbles.value = marblesCopy.toList()
+                _computerScore.value += 1
 
                 // extra turn awarded (don't switch currPlayer)
-                moveInProgress.value = false
+                _moveInProgress.value = false
                 return@launch
             }
 
             // Check if it is a capture
-            else if (holeToUpdate in 0..5 && currentPlayer.value == 0) {
+            else if (holeToUpdate in 0..5 && marblesCopy[holeToUpdate] == 0 && marblesCopy[12 - holeToUpdate] > 0 && currentPlayer.value == 0) {
                 val oppositeHole =  12 - holeToUpdate
-
-                // if opposite hole has marbles, play capture animation
-                if (marblesCopy[oppositeHole] > 0) {
-                    playerCaptureEvent.emit(holeToUpdate to oppositeHole)
-                    delay(300)
-                }
-
                 // update game stats
                 val capturedCount = 1 + marblesCopy[oppositeHole]
-                playerScore.value += capturedCount
-                marblesCopy[hole]--
+                _playerScore.value += capturedCount
+                marblesCopy[6] += capturedCount
+                marblesCopy[actualHole] = 0
                 marblesCopy[holeToUpdate] = 0
                 marblesCopy[oppositeHole] = 0
-                marbles.value = marblesCopy
+                _marbles.value = marblesCopy
 
                 // switch to next player
-                currentPlayer.value = 1
-                moveInProgress.value = false
+                _currentPlayer.value = 1
+                _moveInProgress.value = false
                 return@launch
             }
 
-            else if (holeToUpdate in 7..12 && currentPlayer.value == 1) {
+            else if (holeToUpdate in 7..12 && marblesCopy[holeToUpdate] == 0 && marblesCopy[12 - holeToUpdate] > 0 && currentPlayer.value == 1) {
                 val oppositeHole =  12 - holeToUpdate
 
                 // if opposite hole has marbles, play capture animation
                 if (marblesCopy[oppositeHole] > 0) {
-                    playerCaptureEvent.emit(holeToUpdate to oppositeHole)
-                    delay(300)
+                    _playerCaptureEvent.emit(holeToUpdate to oppositeHole)
+                    //delay(300)
                 }
 
                 // update game stats
                 val capturedCount = 1 + marblesCopy[oppositeHole]
-                computerScore.value += capturedCount
-                marblesCopy[hole]--
+                _computerScore.value += capturedCount
+                marblesCopy[13]+= capturedCount
+                marblesCopy[actualHole] = 0
                 marblesCopy[holeToUpdate] = 0
                 marblesCopy[oppositeHole] = 0
-                marbles.value = marblesCopy
+                _marbles.value = marblesCopy
 
                 // switch to next player
-                currentPlayer.value = 0
-                moveInProgress.value = false
+                _currentPlayer.value = 0
+                _moveInProgress.value = false
                 return@launch
             }
             else {
                 // animation
-                moveMarbleEvent.emit(hole to holeToUpdate)
+                _moveMarbleEvent.emit(actualHole to holeToUpdate)
                 delay(200)
 
                 // update game state
-                if (currentPlayer.value == 0 && holeToUpdate == 6) playerScore.value++
-                if (currentPlayer.value == 1 && holeToUpdate == 13) computerScore.value++
-                marblesCopy[hole]--
+                if (currentPlayer.value == 0 && holeToUpdate == 6) _playerScore.value++
+                if (currentPlayer.value == 1 && holeToUpdate == 13) _computerScore.value++
+                marblesCopy[actualHole]--
                 marblesCopy[holeToUpdate]++
-                marbles.value = marblesCopy.toList()
+                _marbles.value = marblesCopy.toList()
 
                 // switch to next player
-                if (currentPlayer.value == 1) currentPlayer.value = 0
-                else currentPlayer.value = 1
-                moveInProgress.value = false
+                if (currentPlayer.value == 1) _currentPlayer.value = 0
+                else _currentPlayer.value = 1
+                _moveInProgress.value = false
                 return@launch
             }
         }
     }
 
-    fun calculateComputerMove() : Int {
-        return when (gameMode.value) {
+    private fun calculateComputerMove() : Int {
+        var move = when (gameMode.value) {
             0 -> ComputerPlayer.easy(marbles.value)
             1 -> 7
             2 -> 7
             else -> 7
         }
+        if (marbles.value[move] == 0)
+            return calculateComputerMove()
+        else
+            return move
     }
 
     fun logBoardState(tag: String = "GameViewModel") {
-        // Grab the current lists and values
-        val board = marbles.value
-        val pScore = playerScore.value
-        val cScore = computerScore.value
-        val turn   = if (currentPlayer.value == 0) "PLAYER" else "COMPUTER"
-
-        // Format a single line: “Board: [4,4,4,4,4,4,4,4,4,4,4,4,4,4] | P=0 | C=0 | Turn=PLAYER”
-        Log.d(tag, "Board: $board | P=$pScore | C=$cScore | Turn=$turn")
+        viewModelScope.launch {
+            // delay before logging
+            delay(400L)
+            // now grab and log
+            val board = marbles.value
+            val pScore = playerScore.value
+            val cScore = computerScore.value
+            val turn   = if (currentPlayer.value == 0) "PLAYER" else "COMPUTER"
+            Log.d(tag, "Board: $board | P=$pScore | C=$cScore | Turn=$turn")
+        }
     }
 }

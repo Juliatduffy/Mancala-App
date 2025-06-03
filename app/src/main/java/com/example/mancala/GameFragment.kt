@@ -29,7 +29,7 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSubmitMove.setOnClickListener {
+        binding.playerMove.setOnClickListener {
             val text = binding.editPitIndex.text.toString().trim()
             val pitIndex = text.toIntOrNull()
             if (pitIndex == null || pitIndex !in 0..12) {
@@ -40,6 +40,7 @@ class GameFragment : Fragment() {
             viewModel.move(pitIndex)
             viewModel.logBoardState()
         }
+
     }
 
     override fun onDestroyView() {

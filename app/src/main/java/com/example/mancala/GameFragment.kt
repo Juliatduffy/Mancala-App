@@ -2,6 +2,7 @@ package com.example.mancala
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +30,7 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.playerMove.setOnClickListener {
+        binding.playMove.setOnClickListener {
             val text = binding.editPitIndex.text.toString().trim()
             val pitIndex = text.toIntOrNull()
             if (pitIndex == null || pitIndex !in 0..12) {
@@ -40,9 +41,26 @@ class GameFragment : Fragment() {
             viewModel.move(pitIndex)
             viewModel.logBoardState()
         }
+        lifecycleScope.launch {
+            viewModel.moveMarbleEvent.collect { (fromPit, toPit) ->
+                animateSingleMarbleMove(fromPit, toPit)
+            }
+        }
 
+        lifecycleScope.launch {
+            viewModel.playerCaptureEvent.collect { (landingPit, oppositePit) ->
+                animateCapture(landingPit, oppositePit)
+            }
+        }
     }
 
+    fun animateSingleMarbleMove(fromPit: Int, toPit: Int) {
+        Log.d("animation","Move $fromPit to $toPit")
+    }
+
+    fun animateCapture(landingPit: Int, oppositePit: Int) {
+        Log.d("animation","marble landed: $landingPit Capture: $oppositePit")
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

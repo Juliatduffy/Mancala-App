@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 class GameViewModel : ViewModel() {
 
     private val _playerScore = MutableStateFlow(0)
-    val playerScore: StateFlow<Int> get() = _playerScore
+    private val playerScore: StateFlow<Int> get() = _playerScore
 
     private val _computerScore = MutableStateFlow(0)
-    val computerScore: StateFlow<Int> get() = _computerScore
+    private val computerScore: StateFlow<Int> get() = _computerScore
 
     private val _moveMarbleEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
     val moveMarbleEvent: SharedFlow<Pair<Int, Int>> get() = _moveMarbleEvent
@@ -27,16 +27,16 @@ class GameViewModel : ViewModel() {
     val playerCaptureEvent: SharedFlow<Pair<Int,Int>> get() = _playerCaptureEvent
 
     private val _moveInProgress = MutableStateFlow(false)
-    val moveInProgress: StateFlow<Boolean> get() = _moveInProgress
+    private val moveInProgress: StateFlow<Boolean> get() = _moveInProgress
 
     private val _marbles = MutableStateFlow<List<Int>>(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
-    val marbles: StateFlow<List<Int>> get() = _marbles
+    private val marbles: StateFlow<List<Int>> get() = _marbles
 
     private val _currentPlayer = MutableStateFlow(0)
-    val currentPlayer: StateFlow<Int> get() = _currentPlayer
+    private val currentPlayer: StateFlow<Int> get() = _currentPlayer
 
     private val _gameMode = MutableStateFlow(0)
-    val gameMode: StateFlow<Int> get() = _gameMode
+    private val gameMode: StateFlow<Int> get() = _gameMode
 
     // could add who plays first here eventually
     fun startGame(gameMode: String){
@@ -86,8 +86,6 @@ class GameViewModel : ViewModel() {
 
                 // signal animation to move marble from one hole to another
                 _moveMarbleEvent.emit(actualHole to holeToUpdate)
-                // allow time to play the animation
-                //delay(300)
 
                 // update player score
                 if (holeToUpdate == 6) _playerScore.value++
@@ -116,7 +114,6 @@ class GameViewModel : ViewModel() {
 
                 // animation
                 _moveMarbleEvent.emit(actualHole to holeToUpdate)
-                //delay(300)
 
                 // game state
                 marblesCopy[actualHole]--
@@ -132,7 +129,6 @@ class GameViewModel : ViewModel() {
             else if (holeToUpdate == 13) {
                 // animation
                 _moveMarbleEvent.emit(actualHole to holeToUpdate)
-                //delay(300)
 
                 // game state
                 marblesCopy[actualHole]--
@@ -169,7 +165,6 @@ class GameViewModel : ViewModel() {
                 // if opposite hole has marbles, play capture animation
                 if (marblesCopy[oppositeHole] > 0) {
                     _playerCaptureEvent.emit(holeToUpdate to oppositeHole)
-                    //delay(300)
                 }
 
                 // update game stats
@@ -189,7 +184,6 @@ class GameViewModel : ViewModel() {
             else {
                 // animation
                 _moveMarbleEvent.emit(actualHole to holeToUpdate)
-                delay(200)
 
                 // update game state
                 if (currentPlayer.value == 0 && holeToUpdate == 6) _playerScore.value++
@@ -207,24 +201,24 @@ class GameViewModel : ViewModel() {
         }
     }
 
+    // TODO make sure we can't cause an infinite loop here
     private fun calculateComputerMove() : Int {
-        var move = when (gameMode.value) {
+        val move = when (gameMode.value) {
             0 -> ComputerPlayer.easy(marbles.value)
             1 -> 7
             2 -> 7
             else -> 7
         }
-        if (marbles.value[move] == 0)
-            return calculateComputerMove()
+        return if (marbles.value[move] == 0)
+            calculateComputerMove()
         else
-            return move
+            move
     }
 
     fun logBoardState(tag: String = "GameViewModel") {
         viewModelScope.launch {
             // delay before logging
-            delay(400L)
-            // now grab and log
+            delay(1000L)
             val board = marbles.value
             val pScore = playerScore.value
             val cScore = computerScore.value

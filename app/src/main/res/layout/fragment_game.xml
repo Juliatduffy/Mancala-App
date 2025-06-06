@@ -493,6 +493,7 @@
 
     <FrameLayout
         android:id="@+id/pit0"
+        android:contentDescription="pit0"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -537,6 +538,7 @@
         android:id="@+id/pit1"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="pit1"
         android:clickable="true"
         android:focusable="true"
         android:background="@drawable/hole"
@@ -577,6 +579,7 @@
 
     <FrameLayout
         android:id="@+id/pit2"
+        android:contentDescription="pit2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -619,6 +622,7 @@
 
     <FrameLayout
         android:id="@+id/pit3"
+        android:contentDescription="pit3"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -661,6 +665,7 @@
 
     <FrameLayout
         android:id="@+id/pit4"
+        android:contentDescription="pit4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -704,6 +709,7 @@
 
     <FrameLayout
         android:id="@+id/pit5"
+        android:contentDescription="pit5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"

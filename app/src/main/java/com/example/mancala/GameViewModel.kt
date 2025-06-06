@@ -233,10 +233,46 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         }
     }
 
+    /*
+    This method checks to see if there was a winner and if so, moves all remaining marbles on
+    the non-empty side of the board to their respective store. A moveMarbleEvent emit is
+    sent for each of these moves, so in the ui, all marbles can be animated individually.
+    Then, an winEvent emit is sent to the game fragment so that a win message can be displayed.
+     */
     private fun checkForWin(marblesCopy : MutableList<Int>) {
+        val playerOutOfMarbles= (0..5).all { marblesCopy[it] == 0 }
+        val computerOutOfMarbles = (7..12).all { marblesCopy[it] == 0 }
 
+        if (!playerOutOfMarbles && !computerOutOfMarbles)
+            return
+
+        viewModelScope.launch {
+            if (playerOutOfMarbles) {
+                for (i in 7 .. 12) {
+                    for (j in 0 until marblesCopy[i]) {
+                        _moveMarbleEvent.emit(i to 13)
+                        marblesCopy[i]--
+                        marblesCopy[13]++
+                        _computerScore.value++
+                        _marbles.value = marblesCopy.toList()
+                    }
+                }
+            }
+            if (computerOutOfMarbles) {
+                for (i in 0 .. 5) {
+                    for (j in 0 until marblesCopy[i]) {
+                        _moveMarbleEvent.emit(i to 6)
+                        marblesCopy[i]--
+                        marblesCopy[6]++
+                        _playerScore.value++ // TODO get rid of play and computer score and just reference the marbles array indices 6 and 13
+                        _marbles.value = marblesCopy.toList()
+                    }
+                }
+            }
+            val winner = if (marblesCopy[6] > marblesCopy[13]) 0 else 1
+            _winEvent.emit(winner)
+        }
     }
-
     // TODO make sure we can't cause an infinite loop here
     private fun calculateComputerMove() : Int {
         val move = when (gameMode.value) {
@@ -251,6 +287,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             move
     }
 
+    // TODO make a better log board state method
     fun logBoardState(tag: String = "GameViewModel") {
         viewModelScope.launch {
             // delay before logging
@@ -264,7 +301,6 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     }
 
     // Helpers for testing:
-
     fun setMarbles(newBoard: List<Int>) { _marbles.value = newBoard }
     fun clearScores() {
         _playerScore.value = 0

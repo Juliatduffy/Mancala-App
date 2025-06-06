@@ -3,40 +3,48 @@ package com.example.mancala
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
 // Store the position of marbles, scores, and game state for persistence
-class GameViewModel : ViewModel() {
+class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel() {
 
     private val _playerScore = MutableStateFlow(0)
-    private val playerScore: StateFlow<Int> get() = _playerScore
+    val playerScore: StateFlow<Int> = _playerScore.asStateFlow()
 
     private val _computerScore = MutableStateFlow(0)
-    private val computerScore: StateFlow<Int> get() = _computerScore
+    val computerScore: StateFlow<Int> = _computerScore.asStateFlow()
 
     private val _moveMarbleEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
-    val moveMarbleEvent: SharedFlow<Pair<Int, Int>> get() = _moveMarbleEvent
+    val moveMarbleEvent: SharedFlow<Pair<Int,Int>> = _moveMarbleEvent.asSharedFlow()
 
     private val _playerCaptureEvent = MutableSharedFlow<Pair<Int,Int>>(extraBufferCapacity = 1)
-    val playerCaptureEvent: SharedFlow<Pair<Int,Int>> get() = _playerCaptureEvent
+    val playerCaptureEvent: SharedFlow<Pair<Int,Int>> get() = _playerCaptureEvent.asSharedFlow()
 
     private val _moveInProgress = MutableStateFlow(false)
-    private val moveInProgress: StateFlow<Boolean> get() = _moveInProgress
+    val moveInProgress: StateFlow<Boolean> = _moveInProgress.asStateFlow()
 
-    private val _marbles = MutableStateFlow<List<Int>>(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
-    private val marbles: StateFlow<List<Int>> get() = _marbles
+    private val _marbles = MutableStateFlow(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
+    val marbles: StateFlow<List<Int>> = _marbles.asStateFlow()
 
     private val _currentPlayer = MutableStateFlow(0)
-    private val currentPlayer: StateFlow<Int> get() = _currentPlayer
+    val currentPlayer: StateFlow<Int> = _currentPlayer.asStateFlow()
 
     private val _gameMode = MutableStateFlow(0)
-    private val gameMode: StateFlow<Int> get() = _gameMode
+     val gameMode: StateFlow<Int> get() = _gameMode
+
+    private val viewModelJob = SupervisorJob()
+    private val viewModelScope = CoroutineScope(ioDispatcher + viewModelJob)
 
     // could add who plays first here eventually
     fun startGame(gameMode: String){
@@ -225,5 +233,20 @@ class GameViewModel : ViewModel() {
             val turn   = if (currentPlayer.value == 0) "PLAYER" else "COMPUTER"
             Log.d(tag, "Board: $board | P=$pScore | C=$cScore | Turn=$turn")
         }
+    }
+
+    // Helpers for testing:
+
+    fun setMarbles(newBoard: List<Int>) { _marbles.value = newBoard }
+    fun clearScores() {
+        _playerScore.value = 0
+        _computerScore.value = 0
+    }
+    fun clearCurrentPlayer() { _currentPlayer.value = 0 }
+    fun forceComputerTurn() { _currentPlayer.value = 1 }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

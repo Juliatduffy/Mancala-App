@@ -152,6 +152,11 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             // Check if it is a capture
             else if (holeToUpdate in 0..5 && marblesCopy[holeToUpdate] == 0 && marblesCopy[12 - holeToUpdate] > 0 && currentPlayer.value == 0) {
                 val oppositeHole =  12 - holeToUpdate
+                val store = if (currentPlayer.value == 1) 13 else 6
+                // if opposite hole has marbles, play capture animation
+                if (marblesCopy[oppositeHole] > 0) {
+                    _playerCaptureEvent.emit(holeToUpdate to store)
+                }
                 // update game stats
                 val capturedCount = 1 + marblesCopy[oppositeHole]
                 _playerScore.value += capturedCount
@@ -169,10 +174,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
             else if (holeToUpdate in 7..12 && marblesCopy[holeToUpdate] == 0 && marblesCopy[12 - holeToUpdate] > 0 && currentPlayer.value == 1) {
                 val oppositeHole =  12 - holeToUpdate
-
+                val store = if (currentPlayer.value == 1) 13 else 6
                 // if opposite hole has marbles, play capture animation
                 if (marblesCopy[oppositeHole] > 0) {
-                    _playerCaptureEvent.emit(holeToUpdate to oppositeHole)
+                    _playerCaptureEvent.emit(holeToUpdate to store)
                 }
 
                 // update game stats

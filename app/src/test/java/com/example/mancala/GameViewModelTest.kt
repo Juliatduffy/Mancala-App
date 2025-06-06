@@ -57,4 +57,64 @@ class GameViewModelTest {
             // Move should have completed
             assertFalse(viewModel.moveInProgress.value)
         }
+
+    @Test
+    fun `move ending in player store grants extra turn`() = runTest {
+        val testDispatcher = StandardTestDispatcher(testScheduler)
+        val viewModel = GameViewModel(ioDispatcher = testDispatcher)
+        // Set up a custom board
+        val board = listOf(0,0,0,0,0,1, 0, 0,0,0,0,0,0, 0)
+        viewModel.setMarbles(board)
+        viewModel.clearScores()
+        viewModel.clearCurrentPlayer()
+        // check that there is only one emission
+        viewModel.moveMarbleEvent.test {
+            viewModel.move(5)
+            advanceUntilIdle()
+            assertEquals(5 to 6, awaitItem())
+            expectNoEvents()
+            cancelAndIgnoreRemainingEvents()
+        }
+        // the marble at hole 5 should now be iin hole 6 and all other holes should be empty
+        val expected = listOf(0,0,0,0,0,0, 1, 0,0,0,0,0,0, 0)
+        assertEquals(expected, viewModel.marbles.value)
+        // Player score incremented by 1
+        assertEquals(1, viewModel.playerScore.value)
+        assertEquals(0, viewModel.computerScore.value)
+        // currentPlayer remains 0 (extra turn)
+        assertEquals(0, viewModel.currentPlayer.value)
+        // Move should have completed
+        assertFalse(viewModel.moveInProgress.value)
     }
+
+    @Test
+    fun `move results in capture on player side`() = runTest {
+        val testDispatcher = StandardTestDispatcher(testScheduler)
+        val viewModel = GameViewModel(ioDispatcher = testDispatcher)
+        // create a capture scenario
+        val boardBefore = listOf(0,1,0,0,0,0, 0, 0,0,0,3,0,0, 0)
+        viewModel.setMarbles(boardBefore)
+        viewModel.clearScores()
+        viewModel.clearCurrentPlayer()
+        // there should be exactly one capture emission: (2→10) indicates we captured from 10.
+        // In our code, we emit (landedPit to oppositePit) before updating state,
+        // so we expect (2 to 10)
+        viewModel.playerCaptureEvent.test {
+            viewModel.move(1)
+            advanceUntilIdle()
+            assertEquals(2 to 6, awaitItem())
+            expectNoEvents()
+            cancelAndIgnoreRemainingEvents()
+        }
+        // After capture
+        val expectedAfter = listOf(0,0,0,0,0,0,4,0,0,0,0,0,0,0)
+        assertEquals(expectedAfter, viewModel.marbles.value)
+        // ensure player score increased by 4
+        assertEquals(4, viewModel.playerScore.value)
+        assertEquals(0, viewModel.computerScore.value)
+        // Turn switches to computer
+        assertEquals(1, viewModel.currentPlayer.value)
+        // Move should have completed
+        assertFalse(viewModel.moveInProgress.value)
+    }
+}

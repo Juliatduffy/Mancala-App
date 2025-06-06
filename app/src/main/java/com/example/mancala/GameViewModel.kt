@@ -65,7 +65,14 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     Things that need to be returned by this method:
     */
     fun move(hole: Int) {
+        println("Move($hole)"
 
+        // If none are nonempty, there is no legal move for the computer.
+        val nonEmpty = (7..12).filter { marbles.value[it] > 0 }
+
+        if (nonEmpty.isEmpty()) {
+            return -1
+        }
         val actualHole = if (currentPlayer.value == 1)  calculateComputerMove() else hole
 
         // check, then set moveInProgress to prohibit user interaction
@@ -75,7 +82,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         // Num marbles in hole that was clicked on
         val initMarbleCount = marbles.value[actualHole]
 
-        if (initMarbleCount == 0) {  // TODO try and remove this check
+        if (initMarbleCount == 0) {
             _moveInProgress.value = false
             return
         }
@@ -127,6 +134,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             if (holeToUpdate == 6) {
 
                 // animation
+                println("moving marble from $actualHole to $holeToUpdate")
                 _moveMarbleEvent.emit(actualHole to holeToUpdate)
 
                 // game state
@@ -136,6 +144,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 _playerScore.value += 1
 
                 // check for win
+                println("Checking for win...")
                 checkForWin(marblesCopy)
 
                 // extra turn awarded (don't switch currPlayer)
@@ -188,6 +197,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
             // CASE 4: COMPUTER SIDE CAPTURE, SWITCH TURNS
             else if (holeToUpdate in 7..12 && marblesCopy[holeToUpdate] == 0 && marblesCopy[oppositeHole] > 0 && currentPlayer.value == 1) {
+                println("About to capture opposite hole: $oppositeHole  current hole = $holeToUpdate  marblesCopy=$marblesCopy curr player = $currentPlayer.value")
                 _playerCaptureEvent.emit(holeToUpdate to 13)
 
                 // update game stats

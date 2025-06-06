@@ -65,14 +65,8 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     Things that need to be returned by this method:
     */
     fun move(hole: Int) {
-        println("Move($hole)"
+        println("Move($hole)")
 
-        // If none are nonempty, there is no legal move for the computer.
-        val nonEmpty = (7..12).filter { marbles.value[it] > 0 }
-
-        if (nonEmpty.isEmpty()) {
-            return -1
-        }
         val actualHole = if (currentPlayer.value == 1)  calculateComputerMove() else hole
 
         // check, then set moveInProgress to prohibit user interaction
@@ -285,6 +279,9 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     }
     // TODO make sure we can't cause an infinite loop here
     private fun calculateComputerMove() : Int {
+        val noPossibleMoves = (7..12).all { marbles.value[it] == 0 }
+        if(noPossibleMoves) return 0
+
         val move = when (gameMode.value) {
             0 -> ComputerPlayer.easy(marbles.value)
             1 -> 7

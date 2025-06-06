@@ -235,28 +235,33 @@ class GameViewModelTest {
     fun `last marble lands in computer store and computer wins no infinite loop`() = runTest {
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val viewModel = GameViewModel(ioDispatcher = testDispatcher)
-        val board = listOf(4,4,4,4,4,4,  0,  0,0,0,0,0,1,  0 )
+        val board = listOf(2,2,2,2,2,2,  0,  0,0,0,0,0,1,  0 )
         viewModel.setMarbles(board)
         viewModel.clearScores()
         viewModel.forceComputerTurn()
-        // Collect exactly one emission: (12→13)
         viewModel.moveMarbleEvent.test {
             viewModel.move(hole = 0)
             advanceUntilIdle()
             assertEquals(12 to 13, awaitItem())
+            assertEquals(0 to 6, awaitItem())
+            assertEquals(0 to 6, awaitItem())
+            assertEquals(1 to 6, awaitItem())
+            assertEquals(1 to 6, awaitItem())
+            assertEquals(2 to 6, awaitItem())
+            assertEquals(2 to 6, awaitItem())
+            assertEquals(3 to 6, awaitItem())
+            assertEquals(3 to 6, awaitItem())
+            assertEquals(4 to 6, awaitItem())
+            assertEquals(4 to 6, awaitItem())
+            assertEquals(5 to 6, awaitItem())
+            assertEquals(5 to 6, awaitItem())
             expectNoEvents()
             cancelAndIgnoreRemainingEvents()
         }
-        val expected = board.toMutableList().apply {
-            this[6] = 24
-            this[12] = 0
-            this[13] = 1
-        }
+        val expected =listOf(0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 1)
         assertEquals(expected, viewModel.marbles.value)
-        assertEquals(24, viewModel.playerScore.value)
+        assertEquals(12, viewModel.playerScore.value)
         assertEquals(1, viewModel.computerScore.value)
-
-        // Because last marble landed in computer store, extra turn → currentPlayer still 1
         assertEquals(1, viewModel.currentPlayer.value)
         assertFalse(viewModel.moveInProgress.value)
     }

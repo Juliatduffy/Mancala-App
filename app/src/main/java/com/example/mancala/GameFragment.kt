@@ -30,17 +30,7 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.playMove.setOnClickListener {
-            val text = binding.editPitIndex.text.toString().trim()
-            val pitIndex = text.toIntOrNull()
-            if (pitIndex == null || pitIndex !in 0..12) {
-                Toast.makeText(requireContext(), "Enter 0–12", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            // Call move(...) with that pit, then log:
-            viewModel.move(pitIndex)
-            viewModel.logBoardState()
-        }
+
         lifecycleScope.launch {
             viewModel.moveMarbleEvent.collect { (fromPit, toPit) ->
                 animateSingleMarbleMove(fromPit, toPit)

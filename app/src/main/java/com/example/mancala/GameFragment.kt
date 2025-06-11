@@ -10,11 +10,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.mancala.databinding.FragmentGameBinding
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.mancala.GameViewModel.GameViewModelFactory
 
 // Front end stuff for the game
 class GameFragment : Fragment() {
-    private val viewModel: GameViewModel by viewModels()
+    private val viewModel: GameViewModel by viewModels {
+        GameViewModelFactory(Dispatchers.Main)
+    }
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
 

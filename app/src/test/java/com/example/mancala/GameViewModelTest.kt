@@ -230,12 +230,11 @@ class GameViewModelTest {
         assertEquals(3, viewModel.computerScore.value)
     }
 
-    // FIXME
     @Test
     fun `last marble lands in computer store and computer wins no infinite loop`() = runTest {
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val viewModel = GameViewModel(ioDispatcher = testDispatcher)
-        val board = listOf(2,2,2,2,2,2,  0,  0,0,0,0,0,1,  0 )
+        val board = listOf(2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0)
         viewModel.setMarbles(board)
         viewModel.clearScores()
         viewModel.forceComputerTurn()
@@ -258,7 +257,7 @@ class GameViewModelTest {
             expectNoEvents()
             cancelAndIgnoreRemainingEvents()
         }
-        val expected =listOf(0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 1)
+        val expected = listOf(0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 1)
         assertEquals(expected, viewModel.marbles.value)
         assertEquals(12, viewModel.playerScore.value)
         assertEquals(1, viewModel.computerScore.value)

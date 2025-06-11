@@ -3,7 +3,6 @@ package com.example.mancala
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +37,9 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
     private val _moveInProgress = MutableStateFlow(false)
     val moveInProgress: StateFlow<Boolean> = _moveInProgress.asStateFlow()
+
+    private val _computerTurnEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val computerTurnEvent: SharedFlow<Unit> get() = _computerTurnEvent
 
     private val _marbles = MutableStateFlow(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
     val marbles: StateFlow<List<Int>> = _marbles.asStateFlow()
@@ -163,6 +165,8 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
                 // extra turn awarded (don't switch currPlayer)
                 _moveInProgress.value = false
+                // left game fragment know that computer gets an extra turn
+                _computerTurnEvent.emit(Unit)
                 return@launch
             }
 
@@ -188,6 +192,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 checkForWin(marblesCopy)
 
                 _moveInProgress.value = false
+
+                // let the game fragment know that it is now the computer's turn
+                _computerTurnEvent.emit(Unit)
+
                 return@launch
             }
 
@@ -232,8 +240,8 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
                 // check for win
                 checkForWin(marblesCopy)
-
                 _moveInProgress.value = false
+                if (_currentPlayer.value == 1 ) _computerTurnEvent.emit(Unit)
                 return@launch
             }
         }
@@ -309,7 +317,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         }
     }
 
-    // Helpers for testing:
+    // Helpers for testing --------------------------------------------
     fun setMarbles(newBoard: List<Int>) { _marbles.value = newBoard }
     fun clearScores() {
         _playerScore.value = 0
@@ -323,7 +331,8 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         viewModelJob.cancel()
     }
 
-    public class GameViewModelFactory(
+    // View model factory --------------------------------------------------
+    class GameViewModelFactory(
         private val dispatcher: CoroutineDispatcher = Dispatchers.Main
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

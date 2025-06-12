@@ -43,6 +43,9 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     private val _computerTurnEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val computerTurnEvent: SharedFlow<Unit> get() = _computerTurnEvent
 
+    private val _playerTurnEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val playerTurnEvent: SharedFlow<Unit> get() = _playerTurnEvent
+
     private val _marbles = MutableStateFlow(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
     val marbles: StateFlow<List<Int>> = _marbles.asStateFlow()
 
@@ -149,6 +152,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
                 // extra turn awarded (don't switch currPlayer)
                 _moveInProgress.value = false
+                _playerTurnEvent.emit(Unit)
                 logBoardState()
                 return@launch
             }
@@ -228,6 +232,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 checkForWin(marblesCopy)
 
                 _moveInProgress.value = false
+                _playerTurnEvent.emit(Unit)
                 logBoardState()
 
                 return@launch
@@ -249,7 +254,9 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 // check for win
                 checkForWin(marblesCopy)
                 _moveInProgress.value = false
+
                 if (_currentPlayer.value == 1) _computerTurnEvent.emit(Unit)
+                else _playerTurnEvent.emit(Unit)
                 logBoardState()
 
                 return@launch

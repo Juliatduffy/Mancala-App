@@ -37,6 +37,7 @@ class GameFragment : Fragment() {
         data class Move(val fromPit: Int, val toPit: Int) : AnimationEvent()
         data class Capture(val landingPit: Int, val storePit: Int) : AnimationEvent()
         data object ComputerTurn : AnimationEvent()
+        data object PlayerTurn : AnimationEvent()
     }
 
     override fun onCreateView(
@@ -93,7 +94,8 @@ class GameFragment : Fragment() {
         val animEvents: Flow<AnimationEvent> = merge(
             viewModel.moveMarbleEvent.map { (from, to) -> AnimationEvent.Move(from, to) },
             viewModel.playerCaptureEvent.map { (landing, store) -> AnimationEvent.Capture(landing, store) },
-            viewModel.computerTurnEvent.map {  AnimationEvent.ComputerTurn }
+            viewModel.computerTurnEvent.map {  AnimationEvent.ComputerTurn },
+            viewModel.playerTurnEvent.map{ AnimationEvent.PlayerTurn }
         )
 
         lifecycleScope.launch {
@@ -110,10 +112,13 @@ class GameFragment : Fragment() {
                             animateSingleMarbleMove(opposite, event.storePit)
                         }
                     }
-                    AnimationEvent.ComputerTurn -> {
+                    is AnimationEvent.ComputerTurn -> {
                         binding.gameCaptions.setText("Computer Turn")
                         delay(1000)
                         viewModel.move(0)
+                    }
+                    is AnimationEvent.PlayerTurn -> {
+                        binding.gameCaptions.setText("Player Turn")
                     }
                 }
             }

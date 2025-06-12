@@ -147,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.28" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_left_bottom"
@@ -166,7 +166,7 @@
         android:background="@drawable/long_hole"
         app:layout_constraintStart_toStartOf="@id/store_left_left"
         app:layout_constraintEnd_toStartOf="@id/store_left_right"
-        app:layout_constraintTop_toTopOf="@id/store_left_top"
+        app:layout_constraintTop_toTopOf="@id/store_right_top"
         app:layout_constraintBottom_toBottomOf="@id/store_left_bottom">
     </FrameLayout>
 
@@ -739,6 +739,216 @@
         app:layout_constraintEnd_toStartOf="@+id/pit3_right"
         app:layout_constraintStart_toStartOf="@+id/pit2_left"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/hole1Count"
+        android:translationY="-9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pit0_right"
+        app:layout_constraintStart_toStartOf="@+id/pit0_left"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+
+    <EditText
+        android:id="@+id/hole2Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:translationY="-9dp"
+        app:layout_constraintEnd_toStartOf="@+id/pit1_right"
+        app:layout_constraintStart_toStartOf="@+id/pit1_left"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+    <EditText
+        android:id="@+id/hole3Count"
+        android:translationY="-9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pit2_right"
+        app:layout_constraintStart_toStartOf="@+id/pit2_left"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+    <EditText
+        android:id="@+id/hole4Count"
+        android:translationY="-9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pit3_right"
+        app:layout_constraintStart_toStartOf="@+id/pit3_left"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+    <EditText
+        android:id="@+id/hole5Count"
+        android:translationY="-9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pit4_right"
+        app:layout_constraintStart_toStartOf="@+id/pit4_left"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+    <EditText
+        android:id="@+id/hole6Count"
+        android:translationY="-9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pit5_right"
+        app:layout_constraintStart_toStartOf="@+id/pit5_left"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+
+    <EditText
+        android:id="@+id/hole7Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/store_left_top"
+        app:layout_constraintEnd_toStartOf="@+id/pit5_right"
+        app:layout_constraintStart_toStartOf="@+id/pit5_left" />
+
+    <EditText
+        android:id="@+id/hole8Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/store_left_top"
+        app:layout_constraintEnd_toStartOf="@+id/pit4_right"
+        app:layout_constraintStart_toStartOf="@+id/pit4_left" />
+
+    <EditText
+        android:id="@+id/hole9Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/store_left_top"
+        app:layout_constraintEnd_toStartOf="@+id/pit3_right"
+        app:layout_constraintStart_toStartOf="@+id/pit3_left" />
+
+    <EditText
+        android:id="@+id/hole10Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/store_left_top"
+        app:layout_constraintEnd_toStartOf="@+id/pit2_right"
+        app:layout_constraintStart_toStartOf="@+id/pit2_left" />
+
+    <EditText
+        android:id="@+id/hole11Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/store_left_top"
+        app:layout_constraintEnd_toStartOf="@+id/pit1_right"
+        app:layout_constraintStart_toStartOf="@+id/pit1_left" />
+
+    <EditText
+        android:id="@+id/hole12Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/store_left_top"
+        app:layout_constraintEnd_toStartOf="@+id/pit0_right"
+        app:layout_constraintStart_toStartOf="@+id/pit0_left" />
+
+    <EditText
+        android:id="@+id/leftStoreCount"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:translationY="-40dp"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/boardImage" />
+
+    <EditText
+        android:id="@+id/rightStoreCount"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:translationY="-40dp"
+        android:fontFamily="@font/averia_serif_libre"
+        android:inputType="text"
+        android:text="4"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/boardImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

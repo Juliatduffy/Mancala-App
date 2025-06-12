@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/outer_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -721,6 +722,23 @@
         app:layout_constraintTop_toTopOf="@id/pit11_top"
         app:layout_constraintBottom_toBottomOf="@id/pit11_bottom">
     </FrameLayout>
+
+    <EditText
+        android:id="@+id/gameCaptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColor="#fff7c2"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/averia_serif_libre"
+        android:text="Player Turn"
+        app:layout_constraintBottom_toTopOf="@+id/guide_top_row"
+        app:layout_constraintEnd_toStartOf="@+id/pit3_right"
+        app:layout_constraintStart_toStartOf="@+id/pit2_left"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

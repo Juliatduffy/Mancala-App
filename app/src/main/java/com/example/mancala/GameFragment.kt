@@ -111,6 +111,7 @@ class GameFragment : Fragment() {
                         }
                     }
                     AnimationEvent.ComputerTurn -> {
+                        binding.gameCaptions.setText("Computer Turn")
                         delay(1000)
                         viewModel.move(0)
                     }

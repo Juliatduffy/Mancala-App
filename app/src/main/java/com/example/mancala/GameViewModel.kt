@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.launch
 
 
@@ -52,11 +54,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(ioDispatcher + viewModelJob)
-
-
+    private val moveMutex = Mutex()
+    private var moveCount = 0
     // could add who plays first here eventually
     fun startGame(gameMode: String){
-
     }
 
     /* callback for when a player clicks on a hole.
@@ -70,21 +71,23 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     */
     fun move(hole: Int) {
         println("Move($hole)")
-
         val actualHole = if (currentPlayer.value == 1)  calculateComputerMove() else hole
 
         // check, then set moveInProgress to prohibit user interaction
         if (moveInProgress.value) return
         else _moveInProgress.value = true
 
+        viewModelScope.launch {
+            moveMutex.withLock {
+
         // Num marbles in hole that was clicked on
         val initMarbleCount = marbles.value[actualHole]
 
         if (initMarbleCount == 0) {
             _moveInProgress.value = false
-            return
+            logBoardState()
+            return@launch
         }
-
         // Num marbles left to distribute
         var currMarbleCount = initMarbleCount
         // Mutable copy of list of marble counts
@@ -92,7 +95,6 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         // Hole we are currently updating
         var holeToUpdate = (actualHole + 1) % 14
 
-        viewModelScope.launch {
             // play single marble animations, distribute all but the last marble
             while (currMarbleCount > 1) {
                 // on player turn, skip computer store
@@ -126,7 +128,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             if (currentPlayer.value == 1 && holeToUpdate == 6) holeToUpdate = 7
 
             // Calculate opposite hole for capture scenarios
-            val oppositeHole =  12 - holeToUpdate
+            val oppositeHole = 12 - holeToUpdate
 
             // CASE 1: LAST MARBLE LANDS IN PLAYER STORE (AND IT IS PLAYER'S TURN), EXTRA TURN IS AWARDED
             if (holeToUpdate == 6) {
@@ -147,6 +149,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
                 // extra turn awarded (don't switch currPlayer)
                 _moveInProgress.value = false
+                logBoardState()
                 return@launch
             }
 
@@ -167,6 +170,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 _moveInProgress.value = false
                 // left game fragment know that computer gets an extra turn
                 _computerTurnEvent.emit(Unit)
+                logBoardState()
                 return@launch
             }
 
@@ -174,8 +178,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             else if (holeToUpdate in 0..5 && marblesCopy[holeToUpdate] == 0 && marblesCopy[oppositeHole] > 0 && currentPlayer.value == 0) {
 
                 // animation
+                _moveMarbleEvent.emit(actualHole to holeToUpdate)
                 _playerCaptureEvent.emit(holeToUpdate to 6)
 
+                // update game stats
                 // update game stats
                 val capturedCount = 1 + marblesCopy[oppositeHole]
                 _playerScore.value += capturedCount
@@ -195,6 +201,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
                 // let the game fragment know that it is now the computer's turn
                 _computerTurnEvent.emit(Unit)
+                logBoardState()
 
                 return@launch
             }
@@ -202,12 +209,13 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             // CASE 4: COMPUTER SIDE CAPTURE, SWITCH TURNS
             else if (holeToUpdate in 7..12 && marblesCopy[holeToUpdate] == 0 && marblesCopy[oppositeHole] > 0 && currentPlayer.value == 1) {
                 println("About to capture opposite hole: $oppositeHole  current hole = $holeToUpdate  marblesCopy=$marblesCopy curr player = $currentPlayer.value")
+                _moveMarbleEvent.emit(actualHole to holeToUpdate)
                 _playerCaptureEvent.emit(holeToUpdate to 13)
 
                 // update game stats
                 val capturedCount = 1 + marblesCopy[oppositeHole]
                 _computerScore.value += capturedCount
-                marblesCopy[13]+= capturedCount
+                marblesCopy[13] += capturedCount
                 marblesCopy[actualHole] = 0
                 marblesCopy[holeToUpdate] = 0
                 marblesCopy[oppositeHole] = 0
@@ -220,6 +228,8 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 checkForWin(marblesCopy)
 
                 _moveInProgress.value = false
+                logBoardState()
+
                 return@launch
             }
 
@@ -229,8 +239,6 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 _moveMarbleEvent.emit(actualHole to holeToUpdate)
 
                 // update game state
-                if (_currentPlayer.value == 0 && holeToUpdate == 6) _playerScore.value++
-                if (_currentPlayer.value == 1 && holeToUpdate == 13) _computerScore.value++
                 marblesCopy[holeToUpdate]++
                 marblesCopy[actualHole]--
                 _marbles.value = marblesCopy.toList()
@@ -241,9 +249,13 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 // check for win
                 checkForWin(marblesCopy)
                 _moveInProgress.value = false
-                if (_currentPlayer.value == 1 ) _computerTurnEvent.emit(Unit)
+                if (_currentPlayer.value == 1) _computerTurnEvent.emit(Unit)
+                logBoardState()
+
                 return@launch
             }
+        }
+
         }
     }
 
@@ -304,17 +316,23 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             move
     }
 
-    // TODO make a better log board state method
     fun logBoardState(tag: String = "GameViewModel") {
-        viewModelScope.launch {
-            // delay before logging
-            delay(1000L)
-            val board = marbles.value
-            val pScore = playerScore.value
-            val cScore = computerScore.value
-            val turn   = if (currentPlayer.value == 0) "PLAYER" else "COMPUTER"
-            Log.d(tag, "Board: $board | P=$pScore | C=$cScore | Turn=$turn")
+        moveCount++
+        val b = marbles.value
+        val topRow    = b.subList(7, 13).reversed()
+            .joinToString(" ") { it.toString().padStart(2, ' ') }
+        val bottomRow = b.subList(0, 6)
+            .joinToString(" ") { it.toString().padStart(2, ' ') }
+        val leftStore  = b[13].toString().padStart(2, ' ')
+        val rightStore = b[6].toString().padStart(2, ' ')
+        val board = buildString {
+            appendLine("    $topRow")
+            appendLine("[$leftStore]${" ".repeat(topRow.length + 2)}[$rightStore]")
+            append("    $bottomRow")
         }
+        Log.d(tag, "----------------Turn $moveCount--------------------")
+        Log.d(tag, board)
+        Log.d(tag, "---------------------------------------------------")
     }
 
     // Helpers for testing --------------------------------------------

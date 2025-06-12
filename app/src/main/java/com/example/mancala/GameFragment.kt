@@ -15,6 +15,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.mancala.GameViewModel.GameViewModelFactory
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 import kotlin.random.Random
 
 // Front end stuff for the game
@@ -27,8 +33,11 @@ class GameFragment : Fragment() {
     private lateinit var holes: List<FrameLayout>
     private val marbleSizeDp = 30
 
-    private val ANIM_DURATION = 200L
-    private val ANIM_BUFFER   = 50L
+    private sealed class AnimationEvent {
+        data class Move(val fromPit: Int, val toPit: Int) : AnimationEvent()
+        data class Capture(val landingPit: Int, val storePit: Int) : AnimationEvent()
+        data object ComputerTurn : AnimationEvent()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,35 +82,39 @@ class GameFragment : Fragment() {
             // all other holes are clickable and call the vm's move() method
             else {
                 container.setOnClickListener {
-                    val marbleCounts = viewModel.marbles.value
                     if (viewModel.moveInProgress.value ||
                         viewModel.currentPlayer.value == 1 ||
-                        marbleCounts[i] == 0) return@setOnClickListener
+                        viewModel.marbles.value[i] == 0
+                    ) return@setOnClickListener
                     viewModel.move(i)
-                    viewModel.logBoardState("GameViewModel")
                 }
             }
         }
+        val animEvents: Flow<AnimationEvent> = merge(
+            viewModel.moveMarbleEvent.map { (from, to) -> AnimationEvent.Move(from, to) },
+            viewModel.playerCaptureEvent.map { (landing, store) -> AnimationEvent.Capture(landing, store) },
+            viewModel.computerTurnEvent.map {  AnimationEvent.ComputerTurn }
+        )
+
         lifecycleScope.launch {
-            viewModel.moveMarbleEvent.collect { (fromPit, toPit) ->
-                animateSingleMarbleMove(fromPit, toPit)
-                delay(ANIM_DURATION + ANIM_BUFFER)
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.playerCaptureEvent.collect { (landingPit, currStore) ->
-                val oppositePit = 12 - landingPit
-                animateSingleMarbleMove(landingPit, currStore)
-                delay(ANIM_DURATION + ANIM_BUFFER)
-                for (i in 0 .. holes[oppositePit].childCount) {
-                    animateSingleMarbleMove(oppositePit, currStore)
-                    delay(ANIM_DURATION + ANIM_BUFFER)
+            animEvents.collect { event ->
+                when (event) {
+                    is AnimationEvent.Move -> {
+                        animateSingleMarbleMove(event.fromPit, event.toPit)
+                    }
+
+                    is AnimationEvent.Capture -> {
+                        animateSingleMarbleMove(event.landingPit, event.storePit)
+                        val opposite = 12 - event.landingPit
+                        repeat(holes[opposite].childCount) {
+                            animateSingleMarbleMove(opposite, event.storePit)
+                        }
+                    }
+                    AnimationEvent.ComputerTurn -> {
+                        delay(1000)
+                        viewModel.move(0)
+                    }
                 }
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.computerTurnEvent.collect {
-                viewModel.move(0)
             }
         }
     }
@@ -128,9 +141,13 @@ class GameFragment : Fragment() {
         }
     }
     // needed help with this from chatgpt
-    private fun animateSingleMarbleMove(fromPit: Int, toPit: Int) {
-        val overlay = binding.animationOverlay
-        if (fromPit !in holes.indices || toPit !in holes.indices) return
+    private suspend fun animateSingleMarbleMove(fromPit: Int, toPit: Int) =
+        suspendCancellableCoroutine { cont ->
+            val overlay = binding.animationOverlay
+            if (fromPit !in holes.indices || toPit !in holes.indices) {
+                cont.resume(Unit)
+                return@suspendCancellableCoroutine
+            }
 
         val overlayLoc = IntArray(2).also { overlay.getLocationOnScreen(it) }
         val fromView = holes[fromPit]
@@ -157,7 +174,7 @@ class GameFragment : Fragment() {
         flyingMarble.animate()
             .x(toCenterX - half - overlayLoc[0])
             .y(toCenterY - half - overlayLoc[1])
-            .setDuration(200L)
+            .setDuration(300L)
             .withEndAction {
                 overlay.removeView(flyingMarble)
                 val sourceContainer = holes[fromPit]
@@ -174,8 +191,13 @@ class GameFragment : Fragment() {
                     }
                 }
                 destContainer.addView(newMarble)
+                // resume coroutine
+                cont.resume(Unit)
             }
             .start()
+
+            // if the coroutine is cancelled before end, remove the view
+            cont.invokeOnCancellation { overlay.removeView(flyingMarble) }
     }
 
     override fun onDestroyView() {
@@ -183,3 +205,4 @@ class GameFragment : Fragment() {
         _binding = null
     }
 }
+

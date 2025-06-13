@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import com.example.mancala.databinding.FragmentGameBinding
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +33,7 @@ class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
     private lateinit var holes: List<FrameLayout>
+    private lateinit var holeCounts:List<EditText>
     private val marbleSizeDp = 30
 
     private sealed class AnimationEvent {
@@ -69,6 +72,22 @@ class GameFragment : Fragment() {
             binding.pit12,
             binding.pit13
         )
+        holeCounts = listOf(
+            binding.hole0Count,
+            binding.hole1Count,
+            binding.hole2Count,
+            binding.hole3Count,
+            binding.hole4Count,
+            binding.hole5Count,
+            binding.leftStoreCount,
+            binding.hole7Count,
+            binding.hole8Count,
+            binding.hole9Count,
+            binding.hole10Count,
+            binding.hole11Count,
+            binding.hole12Count,
+            binding.rightStoreCount
+        )
 
         // populate the board with 4 marbles / hole at the beginning of the game
         redrawAllPits(viewModel.marbles.value)
@@ -103,6 +122,11 @@ class GameFragment : Fragment() {
                 when (event) {
                     is AnimationEvent.Move -> {
                         animateSingleMarbleMove(event.fromPit, event.toPit)
+                        var newCount= viewModel.marbles.value[event.toPit]
+                        holeCounts[event.toPit].setText("$newCount")
+                        newCount =  viewModel.marbles.value[event.fromPit]
+                        holeCounts[event.fromPit].setText("$newCount")
+
                     }
 
                     is AnimationEvent.Capture -> {
@@ -180,7 +204,7 @@ class GameFragment : Fragment() {
         flyingMarble.animate()
             .x(toCenterX - half - overlayLoc[0])
             .y(toCenterY - half - overlayLoc[1])
-            .setDuration(300L)
+            .setDuration(200L)
             .withEndAction {
                 overlay.removeView(flyingMarble)
                 val sourceContainer = holes[fromPit]

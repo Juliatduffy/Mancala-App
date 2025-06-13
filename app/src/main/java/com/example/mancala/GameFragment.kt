@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,7 +17,6 @@ import kotlinx.coroutines.launch
 import com.example.mancala.GameViewModel.GameViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -33,7 +31,7 @@ class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
     private lateinit var holes: List<FrameLayout>
-    private lateinit var holeCounts:List<EditText>
+    private lateinit var holeCounts:List<TextView>
     private val marbleSizeDp = 30
 
     private sealed class AnimationEvent {
@@ -123,26 +121,29 @@ class GameFragment : Fragment() {
                     is AnimationEvent.Move -> {
                         animateSingleMarbleMove(event.fromPit, event.toPit)
                         var newCount= viewModel.marbles.value[event.toPit]
-                        holeCounts[event.toPit].setText("$newCount")
+                        holeCounts[event.toPit].text = "$newCount"
                         newCount =  viewModel.marbles.value[event.fromPit]
-                        holeCounts[event.fromPit].setText("$newCount")
+                        holeCounts[event.fromPit].text = "$newCount"
 
                     }
 
                     is AnimationEvent.Capture -> {
+                        binding.gameCaptions.text = "Capture!"
                         animateSingleMarbleMove(event.landingPit, event.storePit)
                         val opposite = 12 - event.landingPit
                         repeat(holes[opposite].childCount) {
                             animateSingleMarbleMove(opposite, event.storePit)
                         }
+                        if (viewModel.currentPlayer.value == 1) binding.gameCaptions.text = "Computer Turn" else binding.gameCaptions.text =
+                            "Player Turn"
                     }
                     is AnimationEvent.ComputerTurn -> {
-                        binding.gameCaptions.setText("Computer Turn")
+                        binding.gameCaptions.text = "Computer Turn"
                         delay(1000)
                         viewModel.move(0)
                     }
                     is AnimationEvent.PlayerTurn -> {
-                        binding.gameCaptions.setText("Player Turn")
+                        binding.gameCaptions.text = "Player Turn"
                     }
                 }
             }

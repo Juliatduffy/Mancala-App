@@ -59,6 +59,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     private val viewModelScope = CoroutineScope(ioDispatcher + viewModelJob)
     private val moveMutex = Mutex()
     private var moveCount = 0
+
     // could add who plays first here eventually
     fun startGame(gameMode: String){
     }

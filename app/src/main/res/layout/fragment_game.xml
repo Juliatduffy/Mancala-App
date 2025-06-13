@@ -729,7 +729,7 @@
         app:layout_constraintBottom_toBottomOf="@id/pit11_bottom">
     </FrameLayout>
 
-    <EditText
+    <TextView
         android:id="@+id/gameCaptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -746,9 +746,9 @@
         app:layout_constraintStart_toStartOf="@+id/pit2_left"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole0Count"
-        android:translationY="-9dp"
+        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -762,7 +762,7 @@
         app:layout_constraintStart_toStartOf="@+id/pit0_left"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole1Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -773,13 +773,13 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:translationY="-9dp"
+        android:translationY="-3dp"
         app:layout_constraintEnd_toStartOf="@+id/pit1_right"
         app:layout_constraintStart_toStartOf="@+id/pit1_left"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
-    <EditText
+    <TextView
         android:id="@+id/hole2Count"
-        android:translationY="-9dp"
+        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -792,9 +792,9 @@
         app:layout_constraintEnd_toStartOf="@+id/pit2_right"
         app:layout_constraintStart_toStartOf="@+id/pit2_left"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
-    <EditText
+    <TextView
         android:id="@+id/hole3Count"
-        android:translationY="-9dp"
+        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -807,9 +807,9 @@
         app:layout_constraintEnd_toStartOf="@+id/pit3_right"
         app:layout_constraintStart_toStartOf="@+id/pit3_left"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
-    <EditText
+    <TextView
         android:id="@+id/hole4Count"
-        android:translationY="-9dp"
+        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -822,9 +822,9 @@
         app:layout_constraintEnd_toStartOf="@+id/pit4_right"
         app:layout_constraintStart_toStartOf="@+id/pit4_left"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
-    <EditText
+    <TextView
         android:id="@+id/hole5Count"
-        android:translationY="-9dp"
+        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -838,7 +838,7 @@
         app:layout_constraintStart_toStartOf="@+id/pit5_left"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole7Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -851,9 +851,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/store_left_top"
         app:layout_constraintEnd_toStartOf="@+id/pit5_right"
-        app:layout_constraintStart_toStartOf="@+id/pit5_left" />
+        app:layout_constraintStart_toStartOf="@+id/pit5_left"
+        app:layout_constraintTop_toTopOf="@+id/guide_top_row" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole8Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -866,9 +867,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/store_left_top"
         app:layout_constraintEnd_toStartOf="@+id/pit4_right"
-        app:layout_constraintStart_toStartOf="@+id/pit4_left" />
+        app:layout_constraintStart_toStartOf="@+id/pit4_left"
+        app:layout_constraintTop_toTopOf="@+id/guide_top_row" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole9Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -881,9 +883,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/store_left_top"
         app:layout_constraintEnd_toStartOf="@+id/pit3_right"
-        app:layout_constraintStart_toStartOf="@+id/pit3_left" />
+        app:layout_constraintStart_toStartOf="@+id/pit3_left"
+        app:layout_constraintTop_toTopOf="@+id/guide_top_row" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole10Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -896,9 +899,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/store_left_top"
         app:layout_constraintEnd_toStartOf="@+id/pit2_right"
-        app:layout_constraintStart_toStartOf="@+id/pit2_left" />
+        app:layout_constraintStart_toStartOf="@+id/pit2_left"
+        app:layout_constraintTop_toTopOf="@+id/guide_top_row" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole11Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -911,9 +915,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/store_left_top"
         app:layout_constraintEnd_toStartOf="@+id/pit1_right"
-        app:layout_constraintStart_toStartOf="@+id/pit1_left" />
+        app:layout_constraintStart_toStartOf="@+id/pit1_left"
+        app:layout_constraintTop_toTopOf="@+id/guide_top_row" />
 
-    <EditText
+    <TextView
         android:id="@+id/hole12Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -926,12 +931,13 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/store_left_top"
         app:layout_constraintEnd_toStartOf="@+id/pit0_right"
-        app:layout_constraintStart_toStartOf="@+id/pit0_left" />
+        app:layout_constraintStart_toStartOf="@+id/pit0_left"
+        app:layout_constraintTop_toTopOf="@+id/guide_top_row" />
 
-    <EditText
+    <TextView
         android:id="@+id/leftStoreCount"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:fontFamily="@font/averia_serif_libre"
         android:inputType="text"
@@ -940,12 +946,13 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:translationX="28dp"
-        android:translationY="-95dp"
+        android:translationX="34dp"
+        android:translationY="-25dp"
         app:layout_constraintEnd_toStartOf="@+id/boardImage"
-        app:layout_constraintStart_toStartOf="@+id/boardImage" />
+        app:layout_constraintStart_toStartOf="@+id/store_left_bottom"
+        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
 
-    <EditText
+    <TextView
         android:id="@+id/rightStoreCount"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -957,7 +964,7 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:translationX="-37dp"
-        android:translationY="85dp"
+        android:translationY="105dp"
         app:layout_constraintStart_toEndOf="@+id/boardImage"
         tools:layout_editor_absoluteY="94dp" />
 

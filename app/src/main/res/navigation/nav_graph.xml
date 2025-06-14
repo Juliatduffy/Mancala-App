@@ -21,8 +21,25 @@
         android:name="com.example.mancala.GameFragment"
         android:label="Game"
         />
+    <action
+        android:id="@+id/action_game_to_game_over"
+        app:destination="@id/gameOverFragment" />
     <argument
         android:name="difficulty"
         android:defaultValue="easy"
         app:argType="string" />
+
+    <fragment
+        android:id="@+id/gameOverFragment"
+        android:name="com.example.mancala.GameOverFragment" >
+        <argument
+            android:name="winner"
+            app:argType="integer" />
+        <action
+        android:id="@+id/action_gameOverFragment_to_gameFragment"
+        app:destination="@id/gameFragment"
+        app:popUpTo="@id/gameFragment"
+        app:popUpToInclusive="true" />
+    </fragment>
+
 </navigation>

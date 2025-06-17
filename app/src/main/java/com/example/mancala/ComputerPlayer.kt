@@ -54,11 +54,6 @@ public class ComputerPlayer {
             return bestMove
         }
 
-        // TODO implement hard algorithm (recursive)
-        fun hard(boardState: List<Int>): Int {
-            return kotlin.random.Random.nextInt(7, 13)
-        }
-
         private fun marblesCaptured(boardState: List<Int>, startingHole: Int): Int {
             val pits = boardState.toMutableList()
             val marbles = pits[startingHole]
@@ -109,6 +104,60 @@ public class ComputerPlayer {
 
             return current
         }
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        // TODO implement hard algorithm (recursive)
+        fun hard(boardState: List<Int>): Int {
+            return kotlin.random.Random.nextInt(7, 13)
+        }
+
+
+//        pseudocode for hard player:
+//
+//        minimax(boardState, currrentPlayer)
+//
+//        initialize the best move as -1 or NONE
+//
+//        If the game is over (one side has no marbles) or the depth <= 0
+//            return ai score - player score (maximizes ai score minimizes player score) and the best move
+//
+//        IF: if it is the AI's turn:
+//            - initialize the best score as -inf
+//            - foreach possible move:
+//                - copy the board
+//                - perform a move and see if the ai gets another turn
+//
+//            - if ai gets another turn:
+//                  call minimax again passing in the new board state with the ai as
+//                  the current player and the same depth
+//                  (we don't increment the depth until we switch turns because we
+//                  don't want to penalize the ai for doing something good (getting an extra turn))
+//
+//            - if no extra turn
+//                call minimax again with the player as current player and decrement the depth
+//
+//            If the resulting score is better than the current best:
+//                - update the best score and best move
+//        ELSE: If it's the PLAYER's turn:
+//            - initialize the best score as inf (very bad from the
+//              AI's perspective, anything worse than inf is better)
+//            - initialize best move as -1 or NONE
+//                - foreach move the PLAYER can make:
+//                    - copy the board
+//                    - perform each move
+//                    if results in an extra player turn, call minimax again with the same player and depth
+//
+//                    else: it doesn't result in an extra turn:
+//                        call minimax again with depth decremented and switch to ai player.
+//
+//        If the resulting score is better (less than for the player) than the current best:
+//               - update the best score and best move
+//
+//        After all moves return the best score and best move
+
+
+
+
 
     }
 }

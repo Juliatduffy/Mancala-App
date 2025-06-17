@@ -41,13 +41,9 @@ class HomeFragment : Fragment() {
             nav.navigate(R.id.action_home_to_game, args)
         }
 
-        // If you need to hook up settings/help ImageButtons:
-        binding.settingsButton.setOnClickListener {
-            // …
-        }
-        binding.helpButton.setOnClickListener {
-            // …
-        }
+        // TODO: hook up settings/help ImageButtons:
+        binding.settingsButton.setOnClickListener { }
+        binding.helpButton.setOnClickListener { }
     }
 
     override fun onDestroyView() {

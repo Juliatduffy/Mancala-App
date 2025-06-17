@@ -92,6 +92,8 @@ class GameFragment : Fragment() {
             binding.hole12Count,
             binding.leftStoreCount
         )
+        val difficulty = arguments?.getString("difficulty") ?: "easy"
+        viewModel.startGame(difficulty)
 
         // populate the board with 4 marbles / hole at the beginning of the game
         redrawAllPits(viewModel.marbles.value)
@@ -166,7 +168,9 @@ class GameFragment : Fragment() {
                     is AnimationEvent.GameOver   -> {
                         findNavController().navigate(
                             R.id.action_game_to_game_over,
-                            bundleOf("winner" to event.winner)
+                            bundleOf("winner" to event.winner, "difficulty" to difficulty,
+                                "playerScore" to viewModel.marbles.value[6],
+                                "computerScore" to viewModel.marbles.value[13])
                         )
 
                     }

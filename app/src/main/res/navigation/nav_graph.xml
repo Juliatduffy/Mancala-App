@@ -28,6 +28,13 @@
         android:name="difficulty"
         android:defaultValue="easy"
         app:argType="string" />
+    <argument
+        android:name="playerScore"
+        app:argType="integer" />
+
+    <argument
+        android:name="computerScore"
+        app:argType="integer" />
 
     <fragment
         android:id="@+id/gameOverFragment"

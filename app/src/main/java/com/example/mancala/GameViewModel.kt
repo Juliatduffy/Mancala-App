@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -62,6 +61,12 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
     // could add who plays first here eventually
     fun startGame(gameMode: String){
+        _gameMode.value = when (gameMode) {
+            "easy" -> 0
+            "medium" -> 1
+            "hard" -> 2
+            else -> 0
+        }
     }
 
     /* callback for when a player clicks on a hole.
@@ -309,13 +314,15 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     }
     // TODO make sure we can't cause an infinite loop here
     private fun calculateComputerMove() : Int {
+
         val noPossibleMoves = (7..12).all { marbles.value[it] == 0 }
         if(noPossibleMoves) return 0
 
+        var boardCopy = marbles.value.toMutableList()
         val move = when (gameMode.value) {
-            0 -> ComputerPlayer.easy(marbles.value)
-            1 -> 7
-            2 -> 7
+            0 -> ComputerPlayer.easy()
+            1 -> ComputerPlayer.medium(boardCopy)
+            2 -> ComputerPlayer.hard(boardCopy)
             else -> 7
         }
         return if (marbles.value[move] == 0)
@@ -324,7 +331,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             move
     }
 
-    fun logBoardState(tag: String = "GameViewModel") {
+    private fun logBoardState(tag: String = "GameViewModel") {
         moveCount++
         val b = marbles.value
         val topRow    = b.subList(7, 13).reversed()

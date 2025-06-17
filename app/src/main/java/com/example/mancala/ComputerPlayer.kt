@@ -1,5 +1,7 @@
 package com.example.mancala
 
+import kotlinx.coroutines.launch
+
 public class ComputerPlayer {
 
     companion object {
@@ -108,19 +110,22 @@ public class ComputerPlayer {
 
         // TODO implement hard algorithm (recursive)
         fun hard(boardState: List<Int>): Int {
-            return kotlin.random.Random.nextInt(7, 13)
+            return minimax(boardState, 1, 6).second
         }
 
+        // return best score, best move
+        private fun minimax(boardState : List<Int>, currentPlayer : Int, depth: Int) : Pair<Int, Int> {
 
-//        pseudocode for hard player:
-//
-//        minimax(boardState, currrentPlayer)
-//
-//        initialize the best move as -1 or NONE
-//
 //        If the game is over (one side has no marbles) or the depth <= 0
 //            return ai score - player score (maximizes ai score minimizes player score) and the best move
 //
+            val playerOutOfMarbles= (0..5).all { boardState[it] == 0 }
+            val computerOutOfMarbles = (7..12).all { boardState[it] == 0 }
+            if(playerOutOfMarbles || computerOutOfMarbles)
+                return evaluateScore(boardState) to -1 // placeholder move gets returned here
+            var bestScore = -10000
+            var bestMove = -1
+
 //        IF: if it is the AI's turn:
 //            - initialize the best score as -inf
 //            - foreach possible move:
@@ -156,7 +161,47 @@ public class ComputerPlayer {
 //        After all moves return the best score and best move
 
 
+            return 0 to 0
+        }
 
+        private fun evaluateScore(boardState: List<Int>): Any {
+            //TODO calculate last move scores
+
+        }
+
+//        private fun checkForWin(marblesCopy : MutableList<Int>) {
+//            val playerOutOfMarbles= (0..5).all { marblesCopy[it] == 0 }
+//            val computerOutOfMarbles = (7..12).all { marblesCopy[it] == 0 }
+//
+//            if (!playerOutOfMarbles && !computerOutOfMarbles)
+//                return
+//
+//            viewModelScope.launch {
+//                if (playerOutOfMarbles) {
+//                    for (i in 7 .. 12) {
+//                        for (j in 0 until marblesCopy[i]) {
+//                            _moveMarbleEvent.emit(i to 13)
+//                            marblesCopy[i]--
+//                            marblesCopy[13]++
+//                            _computerScore.value++
+//                            _marbles.value = marblesCopy.toList()
+//                        }
+//                    }
+//                }
+//                if (computerOutOfMarbles) {
+//                    for (i in 0 .. 5) {
+//                        for (j in 0 until marblesCopy[i]) {
+//                            _moveMarbleEvent.emit(i to 6)
+//                            marblesCopy[i]--
+//                            marblesCopy[6]++
+//                            _playerScore.value++ // TODO get rid of play and computer score and just reference the marbles array indices 6 and 13
+//                            _marbles.value = marblesCopy.toList()
+//                        }
+//                    }
+//                }
+//                val winner = if (marblesCopy[6] > marblesCopy[13]) 0 else 1
+//                _winEvent.emit(winner)
+//            }
 
 
     }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -35,6 +36,9 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
 
     private val _winEvent = MutableSharedFlow<Int>(replay = 1)
     val winEvent: SharedFlow<Int> = _winEvent.asSharedFlow()
+
+    private val _endOfGameEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val endOfGameEvent: SharedFlow<Unit> = _endOfGameEvent.asSharedFlow()
 
     private val _moveInProgress = MutableStateFlow(false)
     val moveInProgress: StateFlow<Boolean> = _moveInProgress.asStateFlow()
@@ -286,10 +290,13 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             return
 
         viewModelScope.launch {
+            _endOfGameEvent.emit(Unit)
+
             if (playerOutOfMarbles) {
                 for (i in 7 .. 12) {
                     for (j in 0 until marblesCopy[i]) {
                         _moveMarbleEvent.emit(i to 13)
+                        delay(300)
                         marblesCopy[i]--
                         marblesCopy[13]++
                         _computerScore.value++
@@ -301,6 +308,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                 for (i in 0 .. 5) {
                     for (j in 0 until marblesCopy[i]) {
                         _moveMarbleEvent.emit(i to 6)
+                        delay(300)
                         marblesCopy[i]--
                         marblesCopy[6]++
                         _playerScore.value++ // TODO get rid of play and computer score and just reference the marbles array indices 6 and 13

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -27,6 +26,15 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.random.Random
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.graphics.Path
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import kotlin.math.abs
+import kotlin.math.min
+
 
 // Front end stuff for the game
 class GameFragment : Fragment() {
@@ -45,6 +53,8 @@ class GameFragment : Fragment() {
         data object ComputerTurn : AnimationEvent()
         data object PlayerTurn : AnimationEvent()
         data class GameOver(val winner: Int) : AnimationEvent()
+        data object EndOfGame : AnimationEvent()
+
     }
 
     override fun onCreateView(
@@ -121,7 +131,8 @@ class GameFragment : Fragment() {
             viewModel.playerCaptureEvent.map { (landing, store) -> AnimationEvent.Capture(landing, store) },
             viewModel.computerTurnEvent.map {  AnimationEvent.ComputerTurn },
             viewModel.playerTurnEvent.map{ AnimationEvent.PlayerTurn },
-            viewModel.winEvent.map{ w  -> AnimationEvent.GameOver(w) }
+            viewModel.winEvent.map{ w  -> AnimationEvent.GameOver(w) },
+            viewModel.endOfGameEvent.map{AnimationEvent.EndOfGame }
         )
 
         lifecycleScope.launch {
@@ -138,7 +149,7 @@ class GameFragment : Fragment() {
 
                     is AnimationEvent.Capture -> {
                         binding.gameCaptions.text = "Capture!"
-                        animateSingleMarbleMove(event.landingPit, event.storePit)
+                        animateSingleMarbleMove(event.landingPit, event.storePit, 0.8F)
 
 
                         var newCount =  viewModel.marbles.value[event.landingPit]
@@ -148,7 +159,7 @@ class GameFragment : Fragment() {
 
                         val opposite = 12 - event.landingPit
                         repeat(holes[opposite].childCount) {
-                            animateSingleMarbleMove(opposite, event.storePit)
+                            animateSingleMarbleMove(opposite, event.storePit, 0.8F)
                         }
                         newCount = viewModel.marbles.value[opposite]
                         holeCounts[opposite].text = "$newCount"
@@ -159,13 +170,15 @@ class GameFragment : Fragment() {
                     }
                     is AnimationEvent.ComputerTurn -> {
                         binding.gameCaptions.text = "Computer Turn"
-                        delay(1000)
+                        if (difficulty != "hard")
+                            delay(2000)
                         viewModel.move(0)
                     }
                     is AnimationEvent.PlayerTurn -> {
                         binding.gameCaptions.text = "Player Turn"
                     }
                     is AnimationEvent.GameOver   -> {
+                        delay(3000)
                         findNavController().navigate(
                             R.id.action_game_to_game_over,
                             bundleOf("winner" to event.winner, "difficulty" to difficulty,
@@ -173,6 +186,9 @@ class GameFragment : Fragment() {
                                 "computerScore" to viewModel.marbles.value[13])
                         )
 
+                    }
+                    is AnimationEvent.EndOfGame -> {
+                        binding.gameCaptions.text = "Calculating Final Score..."
                     }
                 }
             }
@@ -201,82 +217,83 @@ class GameFragment : Fragment() {
         }
     }
     // needed help with this from chatgpt
-    private suspend fun animateSingleMarbleMove(fromPit: Int, toPit: Int) =
-        suspendCancellableCoroutine { cont ->
+    private suspend fun animateSingleMarbleMove(fromPit: Int, toPit: Int, speed: Float = 1f ) =
+        suspendCancellableCoroutine<Unit> { cont ->
             val overlay = binding.animationOverlay
             if (fromPit !in holes.indices || toPit !in holes.indices) {
                 cont.resume(Unit)
                 return@suspendCancellableCoroutine
             }
 
-        val overlayLoc = IntArray(2).also { overlay.getLocationOnScreen(it) }
-        val fromView = holes[fromPit]
-        val fromLoc = IntArray(2).also { fromView.getLocationOnScreen(it) }
-        val fromCenterX = fromLoc[0] + fromView.width / 2f
-        val fromCenterY = fromLoc[1] + fromView.height / 2f
+            // screen coords
+            val overlayLoc = IntArray(2).also { overlay.getLocationOnScreen(it) }
+            val fromView = holes[fromPit]
+            val toView = holes[toPit]
+            val fromLoc = IntArray(2).also { fromView.getLocationOnScreen(it) }
+            val toLoc = IntArray(2).also { toView.getLocationOnScreen(it) }
+            val fromCenterX = fromLoc[0] + fromView.width / 2f
+            val fromCenterY = fromLoc[1] + fromView.height / 2f
+            val toCenterX = toLoc[0] + toView.width / 2f
+            val toCenterY = toLoc[1] + toView.height / 2f
 
-        val toView = holes[toPit]
-        val toLoc = IntArray(2).also { toView.getLocationOnScreen(it) }
-        val toCenterX = toLoc[0] + toView.width / 2f
-        val toCenterY = toLoc[1] + toView.height / 2f
+            // marble view and starting pos
+            val sizePx = (marbleSizeDp * resources.displayMetrics.density).toInt()
+            val half = sizePx / 2
+            val marbleView = holes[fromPit].getChildAt(holes[fromPit].childCount - 1)
+            val marblePos = IntArray(2).also { marbleView.getLocationOnScreen(it) }
+            val startX = (marblePos[0] - overlayLoc[0]).toFloat()
+            val startY = (marblePos[1] - overlayLoc[1]).toFloat()
 
-        val sizePx = (marbleSizeDp * resources.displayMetrics.density).toInt()
-        val half = sizePx / 2
-
-        val marbleView = holes[fromPit].getChildAt(holes[fromPit].childCount - 1)
-        val marbleScreenPos = IntArray(2).also { marbleView.getLocationOnScreen(it) }
-        val overlayScreenPos = IntArray(2).also { overlay.getLocationOnScreen(it) }
-        val startX = marbleScreenPos[0] - overlayScreenPos[0]
-        val startY = marbleScreenPos[1] - overlayScreenPos[1]
-
-        val flyingMarble = ImageView(requireContext()).apply {
-            setImageResource(R.drawable.blue)
-            layoutParams = FrameLayout.LayoutParams(sizePx, sizePx)
-//            var marbleToMove = holes[fromPit].getChildAt(holes[fromPit].childCount - 1)
-            x = startX.toFloat()  // starting x
-            y = (startY - half - overlayLoc[1]).toFloat()  //staring y
-        }
-        overlay.addView(flyingMarble)
-
-        flyingMarble.animate()
-            .x(toCenterX - half - overlayLoc[0])
-            .y(toCenterY - half - overlayLoc[1])
-            .setDuration(200L)
-            .withEndAction {
-                overlay.removeView(flyingMarble)
-                val sourceContainer = holes[fromPit]
-                if (sourceContainer.childCount > 0) {
-                    sourceContainer.removeViewAt(sourceContainer.childCount - 1)
-                }
-                val destContainer = holes[toPit]
-                val newMarble = ImageView(requireContext()).apply {
-                    setImageResource(R.drawable.blue)
-                    layoutParams = FrameLayout.LayoutParams(sizePx, sizePx).apply {
-                        gravity = Gravity.CENTER
-                        translationX = Random.nextInt(-40, 40).toFloat()
-                        translationY = Random.nextInt(-60, 60).toFloat()
-                    }
-                }
-                destContainer.addView(newMarble)
-                // resume coroutine
-                cont.resume(Unit)
+            // create flying marble
+            val flyingMarble = ImageView(requireContext()).apply {
+                setImageResource(R.drawable.blue)
+                layoutParams = FrameLayout.LayoutParams(sizePx, sizePx)
+                x = startX
+                y = startY
             }
-            .start()
+            overlay.addView(flyingMarble)
 
-            // if the coroutine is cancelled before end, remove the view
+            // build the curved path
+            val endX = toCenterX - half - overlayLoc[0]
+            val endY = toCenterY - half - overlayLoc[1]
+            val path = Path().apply {
+                moveTo(startX, startY)
+                // lift the arc above the straight line
+                quadTo(
+                    (startX + endX) / 2f,
+                    min(startY, endY) - 100f,
+                    endX,
+                    endY
+                )
+            }
+
+            // animate along that path
+            ObjectAnimator.ofFloat(flyingMarble, View.X, View.Y, path).apply {
+                duration = (200.0 * speed).toLong()
+                interpolator = AccelerateDecelerateInterpolator()
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        // cleanup and update pits
+                        overlay.removeView(flyingMarble)
+                        holes[fromPit]
+                            .takeIf { it.childCount > 0 }
+                            ?.also { pit -> pit.removeViewAt(pit.childCount - 1) }
+                        holes[toPit].addView(ImageView(requireContext()).apply {
+                            setImageResource(R.drawable.blue)
+                            layoutParams = FrameLayout.LayoutParams(sizePx, sizePx).apply {
+                                gravity = Gravity.CENTER
+                                translationX = Random.nextInt(-20, 20).toFloat()
+                                translationY = Random.nextInt(-20, 20).toFloat()
+                            }
+                        })
+                        cont.resume(Unit)
+                    }
+                })
+                start()
+            }
+
             cont.invokeOnCancellation { overlay.removeView(flyingMarble) }
-    }
-    private fun resetGame() {
-        viewModel.clearScores()
-        viewModel.setMarbles(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
-        viewModel.clearCurrentPlayer()
-        redrawAllPits(viewModel.marbles.value)
-        viewModel.marbles.value.forEachIndexed { idx, count ->
-            holeCounts[idx].text = count.toString()
         }
-        binding.gameCaptions.text = "Player Turn"
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

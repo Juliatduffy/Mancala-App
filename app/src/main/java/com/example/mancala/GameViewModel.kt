@@ -316,7 +316,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
                     }
                 }
             }
-            val winner = if (marblesCopy[6] > marblesCopy[13]) 0 else 1
+            val winner = if (marblesCopy[6] > marblesCopy[13]) 0 else if (marblesCopy[6] > marblesCopy[13]) 1 else 2
             _winEvent.emit(winner)
         }
     }

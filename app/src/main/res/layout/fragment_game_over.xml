@@ -25,10 +25,11 @@
         android:fontFamily="@font/averia_serif_libre"
         android:layout_marginTop="24dp"
 
-        android:text="12 - 9 "
+        android:text="Bot: 12                You: 17"
         android:textColor="#fff7c2"
-        android:textSize="48sp"
+        android:textSize="40sp"
         android:textStyle="bold" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -50,7 +51,7 @@
             android:paddingBottom="25dp"
             android:text="Play Again"
             android:textColor="#fff7c2"
-            android:textSize="21sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             app:backgroundTint="@color/colors"
             app:cornerRadius="12dp"
@@ -80,7 +81,7 @@
             android:paddingBottom="25dp"
             android:text="Back to Home"
             android:textColor="#fff7c2"
-            android:textSize="21sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             app:backgroundTint="@color/colors"
             app:cornerRadius="12dp"

@@ -1,10 +1,6 @@
 package com.example.mancala
 
-import android.util.Log
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.withLock
-
-public class ComputerPlayer {
+class ComputerPlayer {
 
     companion object {
         @JvmStatic
@@ -110,7 +106,7 @@ public class ComputerPlayer {
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         fun hard(boardState: List<Int>): Int {
-            return minimax(boardState, 1, 4).second
+            return minimax(boardState, 1, 10).second
         }
 
         // return best score, best move

@@ -27,10 +27,10 @@ class GameOverFragment : Fragment() {
         val playerScore = requireArguments().getInt("playerScore", -1)
         val computerScore = requireArguments().getInt("computerScore", -1)
         val tv = view.findViewById<TextView>(R.id.tvMessage)
-        tv.text = if (winner == 0) "Player Wins!" else "Computer Wins!"
+        tv.text = if (winner == 0) "Player Wins!" else if (winner == 1) "Computer Wins!" else "It's a Tie!"
         val s = view.findViewById<TextView>(R.id.scoreMessage)
         Log.d("GameOverFragment", "args = ${arguments}")
-        s.text = "$computerScore - $playerScore"
+        s.text = "Bot: $computerScore                You: $playerScore"
 
         view.findViewById<Button>(R.id.btnPlayAgain).setOnClickListener {
             val args = Bundle().apply { putString("difficulty", difficulty) }

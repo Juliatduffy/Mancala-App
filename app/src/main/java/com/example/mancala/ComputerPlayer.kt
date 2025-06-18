@@ -77,7 +77,7 @@ public class ComputerPlayer {
 
             // Check capture
             val isOnComputerSide = currentIndex in 7..12
-            val wasEmptyBefore = boardState[currentIndex] == 0
+            val wasEmptyBefore = boardState[currentIndex] -1 == 0
             val oppositeIndex = 12 - currentIndex
 
             return if (isOnComputerSide && wasEmptyBefore && boardState[oppositeIndex] > 0) {
@@ -112,7 +112,7 @@ public class ComputerPlayer {
 
         // TODO implement hard algorithm (recursive)
         fun hard(boardState: List<Int>): Int {
-            return minimax(boardState, 1, 3).second
+            return minimax(boardState, 1, 5).second
         }
 
         // return best score, best move
@@ -137,7 +137,7 @@ public class ComputerPlayer {
                     val newBoard = boardState.toMutableList()
                     // perform returns true if player gets extra move
                     newResult = if (performMove(newBoard, i, currentPlayer)) {
-                        minimax(newBoard, currentPlayer, depth)
+                        minimax(newBoard, currentPlayer, depth -1)
                     }
                     // no extra move
                     else {
@@ -156,10 +156,10 @@ public class ComputerPlayer {
                     val newBoard = boardState.toMutableList()
                     // perform returns true if player gets extra move
                     newResult = if (performMove(newBoard, i, currentPlayer)) {
-                        minimax(newBoard, currentPlayer, depth) // don't decrement depth here
+                        minimax(newBoard, currentPlayer, depth -1) // don't decrement depth here
                     }
                     else {
-                        minimax(newBoard, 0, depth -1)
+                        minimax(newBoard, 1, depth -1)
                     }
                     if (newResult.first < bestResult.first)
                         bestResult = newResult.first to i
@@ -189,6 +189,7 @@ public class ComputerPlayer {
                 marbleCount--
                 // calculate hole to update
             }
+            holeToUpdate = (holeToUpdate + 1) % 14
 
             // MOVE LAST MARBLE AND CALCULATE FINAL SCORES -------------------------
             // on player turn, skip computer store
@@ -243,18 +244,16 @@ public class ComputerPlayer {
         }
 
         // returns ai score - player score
-        private fun evaluateScore(board: List<Int>): Int {
-            val playerStore    = board[6]
-            val computerStore  = board[13]
-            val playerPitsSum  = board.subList(0, 6).sum()
-            val computerPitsSum= board.subList(7, 13).sum()
+        private fun evaluateScore(boardState: List<Int>): Int {
+            // sum of stones left in each side’s pits
+            val playerRemaining   = (0..5).sumOf { boardState[it] }
+            val computerRemaining = (7..12).sumOf { boardState[it] }
 
-            // “Material” on board + store
-            val playerTotal    = playerStore   + playerPitsSum
-            val computerTotal  = computerStore + computerPitsSum
+            // total in each store after the “sweep up”
+            val playerTotal   = boardState[6]   + playerRemaining
+            val computerTotal = boardState[13] + computerRemaining
 
-            // Positive means good for computer
-            return (computerTotal - playerTotal)
+            return computerTotal - playerTotal
         }
     }
 }

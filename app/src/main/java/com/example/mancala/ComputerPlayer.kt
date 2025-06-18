@@ -58,7 +58,7 @@ public class ComputerPlayer {
             return bestMove
         }
 
-        private fun marblesCaptured(boardState: List<Int>, startingHole: Int): Int {
+        fun marblesCaptured(boardState: List<Int>, startingHole: Int): Int {
             val pits = boardState.toMutableList()
             val marbles = pits[startingHole]
             if (marbles == 0) return 0
@@ -87,15 +87,15 @@ public class ComputerPlayer {
             }
         }
 
-        private fun extraTurnAwarded(boardState: List<Int>, startingHole: Int): Boolean {
+        fun extraTurnAwarded(boardState: List<Int>, startingHole: Int): Boolean {
             return computeLandingHole(boardState, startingHole) == 13
         }
 
-        private fun totalMarblesMoved(boardState: List<Int>, startingHole: Int): Int {
+        fun totalMarblesMoved(boardState: List<Int>, startingHole: Int): Int {
             return boardState[startingHole]
         }
 
-        private fun computeLandingHole(boardState: List<Int>, startingHole: Int): Int {
+        fun computeLandingHole(boardState: List<Int>, startingHole: Int): Int {
             val marbles = boardState[startingHole]
             var current = startingHole
             var toDrop = marbles
@@ -109,14 +109,12 @@ public class ComputerPlayer {
             return current
         }
         //////////////////////////////////////////////////////////////////////////////////////////
-
-        // TODO implement hard algorithm (recursive)
         fun hard(boardState: List<Int>): Int {
-            return minimax(boardState, 1, 5).second
+            return minimax(boardState, 1, 4).second
         }
 
         // return best score, best move
-        private fun minimax(boardState : List<Int>, currentPlayer : Int, depth: Int) : Pair<Int, Int> {
+        fun minimax(boardState : List<Int>, currentPlayer : Int, depth: Int) : Pair<Int, Int> {
 
 //        If the game is over (one side has no marbles) or the depth <= 0
 //        return ai score - player score (maximizes ai score minimizes player score) and the best move
@@ -168,7 +166,7 @@ public class ComputerPlayer {
             }
         }
 
-        private fun performMove(boardCopy: MutableList<Int>, hole: Int, currentPlayer: Int) : Boolean {
+        fun performMove(boardCopy: MutableList<Int>, hole: Int, currentPlayer: Int) : Boolean {
 
             var marbleCount = boardCopy[hole]
             var holeToUpdate = hole
@@ -236,7 +234,6 @@ public class ComputerPlayer {
 
             // CASE 5: NORMAL LAST MARBLE PLACEMENT, SWITCH TURNS
             else {
-                Log.d( "ComputerPlayer", "$boardCopy")
                 boardCopy[holeToUpdate]++
                 boardCopy[hole]--
                 return false
@@ -244,7 +241,7 @@ public class ComputerPlayer {
         }
 
         // returns ai score - player score
-        private fun evaluateScore(boardState: List<Int>): Int {
+        fun evaluateScore(boardState: List<Int>): Int {
             // sum of stones left in each side’s pits
             val playerRemaining   = (0..5).sumOf { boardState[it] }
             val computerRemaining = (7..12).sumOf { boardState[it] }

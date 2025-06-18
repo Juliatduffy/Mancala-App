@@ -77,7 +77,7 @@ public class ComputerPlayer {
 
             // Check capture
             val isOnComputerSide = currentIndex in 7..12
-            val wasEmptyBefore = boardState[currentIndex] -1 == 0
+            val wasEmptyBefore = pits[currentIndex] -1 == 0
             val oppositeIndex = 12 - currentIndex
 
             return if (isOnComputerSide && wasEmptyBefore && boardState[oppositeIndex] > 0) {
@@ -137,7 +137,7 @@ public class ComputerPlayer {
                     val newBoard = boardState.toMutableList()
                     // perform returns true if player gets extra move
                     newResult = if (performMove(newBoard, i, currentPlayer)) {
-                        minimax(newBoard, currentPlayer, depth -1)
+                        minimax(newBoard, currentPlayer, depth )
                     }
                     // no extra move
                     else {
@@ -156,7 +156,7 @@ public class ComputerPlayer {
                     val newBoard = boardState.toMutableList()
                     // perform returns true if player gets extra move
                     newResult = if (performMove(newBoard, i, currentPlayer)) {
-                        minimax(newBoard, currentPlayer, depth -1) // don't decrement depth here
+                        minimax(newBoard, currentPlayer, depth ) // don't decrement depth here
                     }
                     else {
                         minimax(newBoard, 1, depth -1)

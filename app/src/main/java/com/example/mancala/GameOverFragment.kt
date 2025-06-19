@@ -22,12 +22,11 @@ class GameOverFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val winner = requireArguments().getInt("winner", 0)
         val difficulty = requireArguments().getString("difficulty", "easy")
         val playerScore = requireArguments().getInt("playerScore", -1)
         val computerScore = requireArguments().getInt("computerScore", -1)
         val tv = view.findViewById<TextView>(R.id.tvMessage)
-        tv.text = if (winner == 0) "Player Wins!" else if (winner == 1) "Computer Wins!" else "It's a Tie!"
+        tv.text = if (playerScore > computerScore) "Player Wins!" else if (computerScore > playerScore) "Computer Wins!" else "It's a Tie!"
         val s = view.findViewById<TextView>(R.id.scoreMessage)
         Log.d("GameOverFragment", "args = ${arguments}")
         s.text = "Bot: $computerScore                You: $playerScore"

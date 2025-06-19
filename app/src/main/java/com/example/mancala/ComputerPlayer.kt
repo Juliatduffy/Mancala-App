@@ -106,7 +106,7 @@ class ComputerPlayer {
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         fun hard(boardState: List<Int>): Int {
-            return minimax(boardState, 1, 10).second
+            return minimax(boardState, 1, 5).second
         }
 
         // return best score, best move

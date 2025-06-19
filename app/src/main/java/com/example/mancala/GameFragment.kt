@@ -170,15 +170,14 @@ class GameFragment : Fragment() {
                     }
                     is AnimationEvent.ComputerTurn -> {
                         binding.gameCaptions.text = "Computer Turn"
-                        if (difficulty != "hard")
-                            delay(2000)
+                        delay(2000)
                         viewModel.move(0)
                     }
                     is AnimationEvent.PlayerTurn -> {
                         binding.gameCaptions.text = "Player Turn"
                     }
                     is AnimationEvent.GameOver   -> {
-                        delay(3000)
+                        delay(2000)
                         findNavController().navigate(
                             R.id.action_game_to_game_over,
                             bundleOf("winner" to event.winner, "difficulty" to difficulty,

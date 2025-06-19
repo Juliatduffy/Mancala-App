@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/howToRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/brown_background"
+    >
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="16dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/howToTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="HOW TO PLAY"
+        android:textColor="#fff7c2"
+        android:fontFamily="@font/averia_serif_libre"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toTopOf="@id/backButton"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/howToTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Objective -->
+            <TextView
+                android:id="@+id/tvObjectiveTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Objective"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tvObjective"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get more stones in your mancala (large pit on the right of the board) than your opponent."
+                android:textSize="16sp"
+                android:paddingTop="4dp"
+                android:textColor="@android:color/white"/>
+
+            <!-- The Basics -->
+            <TextView
+                android:id="@+id/tvBasicsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The Basics"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tvBasics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Each player has six small pits in front of them and one store (large pit) on their right. Each hole starts with 4 stones. Stores start empty. Players take turns. On your turn, select one of your six small pits, pick up all the stones, and sow them counter-clockwise—dropping one stone per pit, including your store but skipping your opponent’s store."
+                android:textSize="16sp"
+                android:paddingTop="4dp"
+                android:textColor="@android:color/white"/>
+
+            <!-- Extra Turn -->
+            <TextView
+                android:id="@+id/tvExtraTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Extra Turn"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tvExtra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="If your last stone lands in your store, you get another turn."
+                android:textSize="16sp"
+                android:paddingTop="4dp"
+                android:textColor="@android:color/white"/>
+
+            <!-- Capturing Stones -->
+            <TextView
+                android:id="@+id/tvCaptureTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capturing Stones"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tvCapture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="If your last stone lands in an empty pit on your side AND the opposite pit has stones, you capture all stones from both pits and move them into your store."
+                android:textSize="16sp"
+                android:paddingTop="4dp"
+                android:textColor="@android:color/white"/>
+
+            <!-- When the Game Ends -->
+            <TextView
+                android:id="@+id/tvEndTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="When the Game Ends"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tvEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The game ends when all six pits on one side are empty. The opponent then moves any remaining stones on their side into their store. Count stones in each store—higher total wins."
+                android:textSize="16sp"
+                android:paddingTop="4dp"
+                android:paddingBottom="16dp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

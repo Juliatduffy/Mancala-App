@@ -50,6 +50,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     val playerTurnEvent: SharedFlow<Unit> get() = _playerTurnEvent
 
     private val _marbles = MutableStateFlow(listOf(4,4,4,4,4,4, 0, 4,4,4,4,4,4, 0))
+//    private val _marbles = MutableStateFlow(listOf(0,0,0,0,0,1, 0, 4,0,3,5,0,4, 0))
     val marbles: StateFlow<List<Int>> = _marbles.asStateFlow()
 
     private val _currentPlayer = MutableStateFlow(0)
@@ -295,10 +296,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             if (playerOutOfMarbles) {
                 for (i in 7 .. 12) {
                     for (j in 0 until marblesCopy[i]) {
-                        _moveMarbleEvent.emit(i to 13)
                         delay(300)
                         marblesCopy[i]--
                         marblesCopy[13]++
+                        _moveMarbleEvent.emit(i to 13)
                         _computerScore.value++
                         _marbles.value = marblesCopy.toList()
                     }
@@ -307,10 +308,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             if (computerOutOfMarbles) {
                 for (i in 0 .. 5) {
                     for (j in 0 until marblesCopy[i]) {
-                        _moveMarbleEvent.emit(i to 6)
                         delay(300)
                         marblesCopy[i]--
                         marblesCopy[6]++
+                        _moveMarbleEvent.emit(i to 6)
                         _playerScore.value++ // TODO get rid of play and computer score and just reference the marbles array indices 6 and 13
                         _marbles.value = marblesCopy.toList()
                     }
@@ -327,12 +328,13 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         if(noPossibleMoves) return 0
 
         var boardCopy = marbles.value.toMutableList()
-        val move = when (gameMode.value) {
+        var move = when (gameMode.value) {
             0 -> ComputerPlayer.easy()
             1 -> ComputerPlayer.medium(boardCopy)
             2 -> ComputerPlayer.hard(boardCopy)
             else -> 7
         }
+        if(move == -1) return 0
         return if (marbles.value[move] == 0)
             calculateComputerMove()
         else

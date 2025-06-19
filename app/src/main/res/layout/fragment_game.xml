@@ -12,7 +12,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/brown_background">
+    android:background="@drawable/back">
 
     <!-- Board image -->
     <ImageView
@@ -22,7 +22,7 @@
         android:adjustViewBounds="true"
         android:background="@null"
         android:scaleType="fitXY"
-        android:src="@drawable/board"
+        android:src="@drawable/myboard"
         app:layout_constraintBottom_toBottomOf="@id/guide_bottom_row"
         app:layout_constraintEnd_toEndOf="@id/col9"
         app:layout_constraintStart_toStartOf="@id/col1"
@@ -41,14 +41,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50" />
+        app:layout_constraintGuide_percent="0.53" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_bottom_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.82" />
 
     <!-- Vertical guidelines for columns -->
     <androidx.constraintlayout.widget.Guideline
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
+        app:layout_constraintGuide_begin="34dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/col2"
@@ -140,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.17" />
+        app:layout_constraintGuide_percent="0.16" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_left_top"
@@ -154,28 +154,29 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.78" />
 
     <FrameLayout
         android:id="@+id/pit13"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="0dp"
+        android:background="@drawable/long_hole"
         android:clickable="false"
         android:focusable="false"
         android:foreground="?attr/selectableItemBackground"
-        android:background="@drawable/long_hole"
+        app:layout_constraintBottom_toTopOf="@+id/pit11_bottom"
+        app:layout_constraintEnd_toStartOf="@id/pit0_left"
         app:layout_constraintStart_toStartOf="@id/store_left_left"
-        app:layout_constraintEnd_toStartOf="@id/store_left_right"
-        app:layout_constraintTop_toTopOf="@id/store_right_top"
-        app:layout_constraintBottom_toBottomOf="@id/store_left_bottom">
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="@id/store_right_top"></FrameLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_right_left"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.83" />
+        app:layout_constraintGuide_percent="0.84" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_right_right"
@@ -189,27 +190,28 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.28" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/store_right_bottom"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.78" />
 
     <FrameLayout
         android:id="@+id/pit6"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="0dp"
+        android:background="@drawable/long_hole"
         android:clickable="false"
         android:foreground="?attr/selectableItemBackground"
-        android:background="@drawable/long_hole"
-        app:layout_constraintStart_toStartOf="@id/store_right_left"
+        app:layout_constraintBottom_toTopOf="@+id/pit11_bottom"
         app:layout_constraintEnd_toStartOf="@id/store_right_right"
-        app:layout_constraintTop_toTopOf="@id/store_right_top"
-        app:layout_constraintBottom_toBottomOf="@id/store_right_bottom">
-    </FrameLayout>
+        app:layout_constraintStart_toStartOf="@id/pit5_right"
+        app:layout_constraintTop_toTopOf="@id/store_right_top" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -231,7 +233,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit0_bottom"
@@ -244,10 +246,10 @@
         android:id="@+id/pit12"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
         android:clickable="false"
         android:focusable="false"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit0_left"
         app:layout_constraintEnd_toStartOf="@id/pit0_right"
@@ -274,7 +276,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit1_bottom"
@@ -290,7 +292,8 @@
         android:layout_marginBottom="5dp"
         android:clickable="false"
         android:focusable="false"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit1_left"
         app:layout_constraintEnd_toStartOf="@id/pit1_right"
@@ -317,7 +320,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit2_bottom"
@@ -334,7 +337,8 @@
         android:clickable="false"
         android:focusable="false"
         android:foreground="?attr/selectableItemBackground"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         app:layout_constraintStart_toStartOf="@id/pit2_left"
         app:layout_constraintEnd_toStartOf="@id/pit2_right"
         app:layout_constraintTop_toTopOf="@id/pit2_top"
@@ -360,7 +364,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit3_bottom"
@@ -376,7 +380,8 @@
         android:layout_marginBottom="5dp"
         android:clickable="false"
         android:focusable="false"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit3_left"
         app:layout_constraintEnd_toStartOf="@id/pit3_right"
@@ -403,7 +408,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit4_bottom"
@@ -419,7 +424,8 @@
         android:layout_marginBottom="5dp"
         android:clickable="false"
         android:focusable="false"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit4_left"
         app:layout_constraintEnd_toStartOf="@id/pit4_right"
@@ -446,7 +452,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="94dp" />
+        app:layout_constraintGuide_percent="0.22871046" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit5_bottom"
@@ -460,15 +466,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
+        android:background="@drawable/hole2"
+    android:layout_marginVertical="12dp"
         android:clickable="false"
         android:focusable="false"
-        android:background="@drawable/hole"
         android:foreground="?attr/selectableItemBackground"
-        app:layout_constraintStart_toStartOf="@id/pit5_left"
+        app:layout_constraintBottom_toBottomOf="@id/pit5_bottom"
         app:layout_constraintEnd_toStartOf="@id/pit5_right"
-        app:layout_constraintTop_toTopOf="@id/pit5_top"
-        app:layout_constraintBottom_toBottomOf="@id/pit5_bottom">
-        </FrameLayout>
+        app:layout_constraintStart_toStartOf="@id/pit5_left"
+        app:layout_constraintTop_toTopOf="@+id/pit4_top"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit6_left"
@@ -505,7 +511,8 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit6_left"
         app:layout_constraintEnd_toStartOf="@id/pit6_right"
@@ -518,7 +525,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.29" />
+        app:layout_constraintGuide_begin="268dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit7_right"
@@ -548,7 +555,8 @@
         android:contentDescription="pit1"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/hole"
+                android:background="@drawable/hole2"
+android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit7_left"
         app:layout_constraintEnd_toStartOf="@id/pit7_right"
@@ -591,7 +599,8 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/hole"
+                android:background="@drawable/hole2"
+android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit8_left"
         app:layout_constraintEnd_toStartOf="@id/pit8_right"
@@ -634,7 +643,8 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/hole"
+                android:background="@drawable/hole2"
+android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit9_left"
         app:layout_constraintEnd_toStartOf="@id/pit9_right"
@@ -677,7 +687,8 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit10_left"
         app:layout_constraintEnd_toStartOf="@id/pit10_right"
@@ -712,7 +723,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.76" />
+        app:layout_constraintGuide_percent="0.73" />
 
     <FrameLayout
         android:id="@+id/pit5"
@@ -721,12 +732,13 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/hole"
+        android:background="@drawable/hole2"
+        android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="@id/pit11_left"
         app:layout_constraintEnd_toStartOf="@id/pit11_right"
-        app:layout_constraintTop_toTopOf="@id/pit11_top"
-        app:layout_constraintBottom_toBottomOf="@id/pit11_bottom">
+        app:layout_constraintTop_toTopOf="@id/pit10_top"
+        app:layout_constraintBottom_toBottomOf="@id/pit10_bottom">
     </FrameLayout>
 
     <TextView
@@ -748,7 +760,6 @@
 
     <TextView
         android:id="@+id/hole0Count"
-        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -758,9 +769,10 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guide_bottom_row"
         app:layout_constraintEnd_toStartOf="@+id/pit0_right"
         app:layout_constraintStart_toStartOf="@+id/pit0_left"
-        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+        app:layout_constraintTop_toBottomOf="@+id/pit0"/>
 
     <TextView
         android:id="@+id/hole1Count"
@@ -773,13 +785,13 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:translationY="-3dp"
+        app:layout_constraintBottom_toTopOf="@+id/guide_bottom_row"
         app:layout_constraintEnd_toStartOf="@+id/pit1_right"
         app:layout_constraintStart_toStartOf="@+id/pit1_left"
-        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+        app:layout_constraintTop_toBottomOf="@+id/pit1" />
+
     <TextView
         android:id="@+id/hole2Count"
-        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -789,12 +801,13 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/pit2_right"
+        app:layout_constraintBottom_toTopOf="@+id/guide_bottom_row"
         app:layout_constraintStart_toStartOf="@+id/pit2_left"
-        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+        app:layout_constraintEnd_toStartOf="@+id/pit2_right"
+        app:layout_constraintTop_toBottomOf="@+id/pit2" />
+
     <TextView
         android:id="@+id/hole3Count"
-        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -804,12 +817,12 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/pit3_right"
+        app:layout_constraintBottom_toTopOf="@+id/guide_bottom_row"
         app:layout_constraintStart_toStartOf="@+id/pit3_left"
-        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+        app:layout_constraintEnd_toStartOf="@+id/pit3_right"
+        app:layout_constraintTop_toBottomOf="@+id/pit3" />
     <TextView
         android:id="@+id/hole4Count"
-        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -819,12 +832,12 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guide_bottom_row"
         app:layout_constraintEnd_toStartOf="@+id/pit4_right"
         app:layout_constraintStart_toStartOf="@+id/pit4_left"
-        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+        app:layout_constraintTop_toBottomOf="@+id/pit4" />
     <TextView
         android:id="@+id/hole5Count"
-        android:translationY="-3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/averia_serif_libre"
@@ -834,9 +847,10 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guide_bottom_row"
         app:layout_constraintEnd_toStartOf="@+id/pit5_right"
         app:layout_constraintStart_toStartOf="@+id/pit5_left"
-        app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
+        app:layout_constraintTop_toBottomOf="@+id/pit1" />
 
     <TextView
         android:id="@+id/hole7Count"
@@ -946,8 +960,8 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:translationX="34dp"
-        android:translationY="-25dp"
+        android:translationX="35dp"
+        android:translationY="-50dp"
         app:layout_constraintEnd_toStartOf="@+id/boardImage"
         app:layout_constraintStart_toStartOf="@+id/store_left_bottom"
         app:layout_constraintTop_toTopOf="@+id/store_left_bottom" />
@@ -963,8 +977,8 @@
         android:textColor="#fff7c2"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:translationX="-37dp"
-        android:translationY="105dp"
+        android:translationX="-35dp"
+        android:translationY="125dp"
         app:layout_constraintStart_toEndOf="@+id/boardImage"
         tools:layout_editor_absoluteY="94dp" />
 

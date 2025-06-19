@@ -135,6 +135,10 @@ class GameFragment : Fragment() {
             viewModel.endOfGameEvent.map{AnimationEvent.EndOfGame }
         )
 
+        binding.backButtonGame.setOnClickListener {
+            findNavController().navigate(R.id.homeFragment)
+        }
+
         lifecycleScope.launch {
             animEvents.collect { event ->
                 when (event) {
@@ -144,14 +148,11 @@ class GameFragment : Fragment() {
                         holeCounts[event.toPit].text = "$newCount"
                         newCount =  viewModel.marbles.value[event.fromPit]
                         holeCounts[event.fromPit].text = "$newCount"
-
                     }
 
                     is AnimationEvent.Capture -> {
                         binding.gameCaptions.text = "Capture!"
                         animateSingleMarbleMove(event.landingPit, event.storePit, 0.8F)
-
-
                         var newCount =  viewModel.marbles.value[event.landingPit]
                         holeCounts[event.landingPit].text = "$newCount"
                         newCount = viewModel.marbles.value[event.storePit]

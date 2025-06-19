@@ -20,13 +20,16 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.mancala.SettingsFragment"
         android:label="Settings" />
-
+    <action
+        android:id="@+id/action_settings_to_home"
+        app:destination="@id/homeFragment" />
 
     <!-- how to play-->
     <fragment
         android:id="@+id/howToFragment"
         android:name="com.example.mancala.HowToFragment"
         android:label="How To Play" />
+
 
     <!-- Game screen -->
     <fragment
@@ -42,9 +45,12 @@
         android:defaultValue="easy"
         app:argType="string" />
     <argument
+        android:name="firstMove"
+        android:defaultValue="0"
+        app:argType="integer" />
+    <argument
         android:name="playerScore"
         app:argType="integer" />
-
     <argument
         android:name="computerScore"
         app:argType="integer" />

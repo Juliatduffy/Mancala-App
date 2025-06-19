@@ -38,7 +38,7 @@
 
 
     <com.google.android.material.slider.Slider
-        android:id="@+id/firstPlayerSlider"
+        android:id="@+id/firstMoveSlider"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -49,7 +49,7 @@
         android:valueTo="2"
         app:thumbWidth="18dp"
         app:thumbHeight="30dp"
-        app:thumbColor="#353434"
+        app:thumbColor="#614A36"
         app:trackColorActive="@color/colors"
         app:tickColor="@color/colors"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,12 +74,12 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="199dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:translationX="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstPlayerSlider">
+        app:layout_constraintTop_toBottomOf="@id/firstMoveSlider">
 
         <TextView
             android:id="@+id/playerFirst"

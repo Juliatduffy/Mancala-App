@@ -29,12 +29,13 @@ import android.animation.ObjectAnimator
 import android.graphics.Path
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import kotlin.math.abs
+import androidx.fragment.app.activityViewModels
 import kotlin.math.min
 
 
 // Front end stuff for the game
 class GameFragment : Fragment() {
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private val viewModel: GameViewModel by viewModels {
         GameViewModelFactory(Dispatchers.Main)
     }
@@ -100,7 +101,9 @@ class GameFragment : Fragment() {
             binding.leftStoreCount
         )
         val difficulty = arguments?.getString("difficulty") ?: "easy"
-        viewModel.startGame(difficulty)
+
+
+        viewModel.startGame(difficulty, homeViewModel.firstMove)
 
         // populate the board with 4 marbles / hole at the beginning of the game
         redrawAllPits(viewModel.marbles.value)

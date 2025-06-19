@@ -7,13 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.mancala.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -30,22 +31,26 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val nav = findNavController()
 
-        val firstMove = requireArguments().getString("firstMove", "-8")
-        Log.d("HomeFragment", "first move: $firstMove")
 
         binding.easyButton.setOnClickListener {
             val args = Bundle().apply {
                 putString("difficulty", "easy")
-                "firstMove" to firstMove
+                putString("firstMove", viewModel.firstMove.toString())
             }
             nav.navigate(R.id.action_home_to_game, args)
         }
         binding.mediumButton.setOnClickListener {
-            val args = Bundle().apply { putString("difficulty", "medium") }
+            val args = Bundle().apply {
+                putString("difficulty", "medium")
+                "firstMove" to viewModel.firstMove.toString()
+            }
             nav.navigate(R.id.action_home_to_game, args)
         }
         binding.hardButton.setOnClickListener {
-            val args = Bundle().apply { putString("difficulty", "hard") }
+            val args = Bundle().apply {
+                putString("difficulty", "hard")
+                "firstMove" to viewModel.firstMove.toString()
+            }
             nav.navigate(R.id.action_home_to_game, args)
         }
         binding.settingsButton.setOnClickListener {

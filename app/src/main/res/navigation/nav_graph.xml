@@ -45,10 +45,6 @@
         android:defaultValue="easy"
         app:argType="string" />
     <argument
-        android:name="firstMove"
-        android:defaultValue="0"
-        app:argType="integer" />
-    <argument
         android:name="playerScore"
         app:argType="integer" />
     <argument

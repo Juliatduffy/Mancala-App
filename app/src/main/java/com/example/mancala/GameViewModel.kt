@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 
 // Store the position of marbles, scores, and game state for persistence
@@ -65,12 +66,17 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
     private var moveCount = 0
 
     // could add who plays first here eventually
-    fun startGame(gameMode: String){
+    fun startGame(gameMode: String, first: Int){
         _gameMode.value = when (gameMode) {
             "easy" -> 0
             "medium" -> 1
             "hard" -> 2
             else -> 0
+        }
+        // handle first move selection
+        _currentPlayer.value = if (first == 0 || first == 1) first else Random.nextInt(2)
+        if(_currentPlayer.value == 1) {
+            move(0)
         }
     }
 

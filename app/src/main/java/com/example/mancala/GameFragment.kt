@@ -1,8 +1,5 @@
 package com.example.mancala
 
-import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.Gravity

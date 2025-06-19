@@ -2,11 +2,13 @@ package com.example.mancala
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.mancala.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -28,8 +30,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val nav = findNavController()
 
+        val firstMove = requireArguments().getString("firstMove", "-8")
+        Log.d("HomeFragment", "first move: $firstMove")
+
         binding.easyButton.setOnClickListener {
-            val args = Bundle().apply { putString("difficulty", "easy") }
+            val args = Bundle().apply {
+                putString("difficulty", "easy")
+                "firstMove" to firstMove
+            }
             nav.navigate(R.id.action_home_to_game, args)
         }
         binding.mediumButton.setOnClickListener {

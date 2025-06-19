@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.mancala.databinding.FragmentHowToBinding
+import com.example.mancala.databinding.SettingsFragmentBinding
 
-class HowToFragment : Fragment() {
+class SettingsFragment: Fragment() {
 
-    private var _binding: FragmentHowToBinding? = null
+    private var _binding: SettingsFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class HowToFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHowToBinding.inflate(inflater, container, false)
+        _binding = SettingsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -26,7 +26,7 @@ class HowToFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val nav = findNavController()
 
-        binding.backButton.setOnClickListener {
+        binding.backButtonSettings.setOnClickListener {
             nav.navigate(R.id.homeFragment)
         }
     }

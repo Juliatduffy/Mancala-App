@@ -15,6 +15,19 @@
             app:destination="@id/gameFragment" />
     </fragment>
 
+    <!-- settings-->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.mancala.SettingsFragment"
+        android:label="Settings" />
+
+
+    <!-- how to play-->
+    <fragment
+        android:id="@+id/howToFragment"
+        android:name="com.example.mancala.HowToFragment"
+        android:label="How To Play" />
+
     <!-- Game screen -->
     <fragment
         android:id="@+id/gameFragment"

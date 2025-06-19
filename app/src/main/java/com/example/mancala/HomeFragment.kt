@@ -40,10 +40,12 @@ class HomeFragment : Fragment() {
             val args = Bundle().apply { putString("difficulty", "hard") }
             nav.navigate(R.id.action_home_to_game, args)
         }
-
-        // TODO: hook up settings/help ImageButtons:
-        binding.settingsButton.setOnClickListener { }
-        binding.helpButton.setOnClickListener { }
+        binding.settingsButton.setOnClickListener {
+            nav.navigate(R.id.settingsFragment)
+        }
+        binding.helpButton.setOnClickListener {
+            nav.navigate(R.id.howToFragment)
+        }
     }
 
     override fun onDestroyView() {

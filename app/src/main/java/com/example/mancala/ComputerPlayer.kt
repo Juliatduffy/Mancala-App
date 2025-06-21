@@ -1,13 +1,37 @@
+/*
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
+import kotlin.math.max
+import kotlin.math.min
 
+/*
+This class contains the implementations of three different computer algorithms- easy, medium,
+and hard. The easy algorithm uses random selection, the medium algorithm uses a simple greedy algorithm,
+and the hard algorithm uses minimax with alpha-beta pruning, memoization, and has an adjustable
+depth parameter so you can decide how many moves in the future you want to calculate.
+ */
 class ComputerPlayer {
 
     companion object {
         @JvmStatic
+        /*
+        Easy computer player algorithm that randomly selects a hole index 7-12
+         */
         fun easy(): Int {
             return kotlin.random.Random.nextInt(7, 13) // until excludes the upper bound
         }
 
+        /*
+        Returns one move for the medium computer player.
+        This algorithm is designed to prioritize moves via the following greedy procedure:
+        - Loop through every possible move 7-12.
+        - If there is a potential capture, select the move that leads to it.
+        - If there are no captures, select a move that allows you to receive an extra turn.
+        - If there are no captures or extra turns available, select the move that moves the most
+          marbles. There is a bonus added for moves that land a marble in the computer's store.
+         */
         fun medium(boardState: List<Int>): Int {
             var bestMove = -1
             var bestScore = -1
@@ -54,6 +78,9 @@ class ComputerPlayer {
             return bestMove
         }
 
+        /*
+        Calculates the number of marbles captured during a specific move
+         */
         fun marblesCaptured(boardState: List<Int>, startingHole: Int): Int {
             val pits = boardState.toMutableList()
             val marbles = pits[startingHole]
@@ -83,14 +110,24 @@ class ComputerPlayer {
             }
         }
 
+        /*
+        Calculates whether a certain move will result in an extra turn (last marble in the
+        sequence lands in the player's store)
+         */
         fun extraTurnAwarded(boardState: List<Int>, startingHole: Int): Boolean {
             return computeLandingHole(boardState, startingHole) == 13
         }
 
+        /*
+        Calculates the total number of marbles moved during a given turn
+         */
         fun totalMarblesMoved(boardState: List<Int>, startingHole: Int): Int {
             return boardState[startingHole]
         }
 
+        /*
+        Computes the landing hole index for a given move
+         */
         fun computeLandingHole(boardState: List<Int>, startingHole: Int): Int {
             val marbles = boardState[startingHole]
             var current = startingHole
@@ -105,12 +142,31 @@ class ComputerPlayer {
             return current
         }
         //////////////////////////////////////////////////////////////////////////////////////////
+
+        // Boolean to represent whether this is the first turn of the algorithm or not.
+        private var firstTurn = true
+        // cache for memoization of pre-calculated board states
+        private val cache = mutableMapOf<Triple<List<Int>,Int,Int>, Pair<Int,Int>>()
+
+        // Calculates the next move for the hard computer player
         fun hard(boardState: List<Int>): Int {
-            return minimax(boardState, 1, 5).second
+            var depth = 6
+            if (firstTurn) {
+                depth = 4
+                firstTurn = false
+            }
+            return minimax(boardState, 1, 6, -100000, 10000).second
         }
 
-        // return best score, best move
-        fun minimax(boardState : List<Int>, currentPlayer : Int, depth: Int) : Pair<Int, Int> {
+        /*
+         Minimax algorithm that returns a pair with the best score, best move for a given board state
+         Includes an adjustable depth and alpha/beta parameters for pruning
+         Also utilizes memoization to save time
+
+         Source for minimax: //TODO add that yt video link 
+         Source for alpha beta pruning: https://mathspp.com/blog/minimax-algorithm-and-alpha-beta-pruning
+         */
+        fun minimax(boardState : List<Int>, currentPlayer : Int, depth: Int, alpha: Int, beta: Int) : Pair<Int, Int> {
 
 //        If the game is over (one side has no marbles) or the depth <= 0
 //        return ai score - player score (maximizes ai score minimizes player score) and the best move
@@ -122,6 +178,13 @@ class ComputerPlayer {
             if(playerOutOfMarbles || computerOutOfMarbles || depth <= 0 )
                 return evaluateScore(boardState.toMutableList()) to -1 // placeholder move gets returned here
 
+            // check the cache to see if we have already computed this result
+            val key = Triple(boardState, currentPlayer, depth)
+            val cached = cache[key]
+            if (cached != null) {
+                return cached
+            }
+
             // if it is the ai turn
             if(currentPlayer == 1) {
                 var bestResult = -10000 to -1
@@ -131,14 +194,18 @@ class ComputerPlayer {
                     val newBoard = boardState.toMutableList()
                     // perform returns true if player gets extra move
                     newResult = if (performMove(newBoard, i, currentPlayer)) {
-                        minimax(newBoard, currentPlayer, depth )
+                        minimax(newBoard, currentPlayer, depth, alpha, beta)
                     }
                     // no extra move
                     else {
-                        minimax(newBoard, 0, depth -1)
+                        minimax(newBoard, 0, depth -1, alpha, beta)
                     }
                     if (newResult.first > bestResult.first)
                         bestResult = newResult.first to i
+
+                    var newAlpha = max(alpha, bestResult.first)
+
+                    if(newAlpha > beta) break
                 }
                 return bestResult
             }
@@ -150,18 +217,26 @@ class ComputerPlayer {
                     val newBoard = boardState.toMutableList()
                     // perform returns true if player gets extra move
                     newResult = if (performMove(newBoard, i, currentPlayer)) {
-                        minimax(newBoard, currentPlayer, depth ) // don't decrement depth here
+                        minimax(newBoard, currentPlayer, depth, alpha, beta) // don't decrement depth here
                     }
                     else {
-                        minimax(newBoard, 1, depth -1)
+                        minimax(newBoard, 1, depth -1, alpha, beta)
                     }
                     if (newResult.first < bestResult.first)
                         bestResult = newResult.first to i
+
+                    var newBeta = min(beta,bestResult.first)
+
+                    if (newBeta < alpha ) break
                 }
+                cache[key] = bestResult
                 return bestResult
             }
         }
 
+        /*
+        Helper for minimax that calculates the board state after a given move
+         */
         fun performMove(boardCopy: MutableList<Int>, hole: Int, currentPlayer: Int) : Boolean {
 
             var marbleCount = boardCopy[hole]
@@ -236,7 +311,9 @@ class ComputerPlayer {
             }
         }
 
-        // returns ai score - player score
+        /*
+         Evaluation function for the minimax algorithm, returns ai score - player score
+         */
         fun evaluateScore(boardState: List<Int>): Int {
             // sum of stones left in each side’s pits
             val playerRemaining   = (0..5).sumOf { boardState[it] }

@@ -102,9 +102,6 @@ class GameFragment : Fragment() {
         )
         val difficulty = arguments?.getString("difficulty") ?: "easy"
 
-
-        viewModel.startGame(difficulty, homeViewModel.firstMove)
-
         // populate the board with 4 marbles / hole at the beginning of the game
         redrawAllPits(viewModel.marbles.value)
 
@@ -138,6 +135,7 @@ class GameFragment : Fragment() {
         binding.backButtonGame.setOnClickListener {
             findNavController().navigate(R.id.homeFragment)
         }
+        viewModel.startGame(difficulty, homeViewModel.firstMove)
 
         lifecycleScope.launch {
             animEvents.collect { event ->

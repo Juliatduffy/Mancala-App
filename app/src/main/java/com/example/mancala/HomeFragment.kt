@@ -1,17 +1,21 @@
+/**
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.mancala.databinding.FragmentHomeBinding
 
+/**
+ * This is the front-end logic for the home screen
+ */
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by activityViewModels()

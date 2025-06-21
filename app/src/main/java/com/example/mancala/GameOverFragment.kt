@@ -1,3 +1,7 @@
+/**
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
 
 import android.os.Bundle
@@ -10,6 +14,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
+/**
+ * End of game screen displaying who won, the final scores, and two buttons- one
+ * to play again (on the same difficulty) amd one to go back to the home screen
+ */
 class GameOverFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

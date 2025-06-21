@@ -1,4 +1,4 @@
-/*
+/**
 Author: Julia Duffy
 Last Edited: 6/20/2025
  */
@@ -6,24 +6,24 @@ package com.example.mancala
 import kotlin.math.max
 import kotlin.math.min
 
-/*
+/**
 This class contains the implementations of three different computer algorithms- easy, medium,
 and hard. The easy algorithm uses random selection, the medium algorithm uses a simple greedy algorithm,
 and the hard algorithm uses minimax with alpha-beta pruning, memoization, and has an adjustable
 depth parameter so you can decide how many moves in the future you want to calculate.
- */
+ **/
 class ComputerPlayer {
 
     companion object {
         @JvmStatic
-        /*
+        /**
         Easy computer player algorithm that randomly selects a hole index 7-12
          */
         fun easy(): Int {
             return kotlin.random.Random.nextInt(7, 13) // until excludes the upper bound
         }
 
-        /*
+        /**
         Returns one move for the medium computer player.
         This algorithm is designed to prioritize moves via the following greedy procedure:
         - Loop through every possible move 7-12.
@@ -78,7 +78,7 @@ class ComputerPlayer {
             return bestMove
         }
 
-        /*
+        /**
         Calculates the number of marbles captured during a specific move
          */
         fun marblesCaptured(boardState: List<Int>, startingHole: Int): Int {
@@ -110,7 +110,7 @@ class ComputerPlayer {
             }
         }
 
-        /*
+        /**
         Calculates whether a certain move will result in an extra turn (last marble in the
         sequence lands in the player's store)
          */
@@ -118,14 +118,14 @@ class ComputerPlayer {
             return computeLandingHole(boardState, startingHole) == 13
         }
 
-        /*
+        /**
         Calculates the total number of marbles moved during a given turn
          */
         fun totalMarblesMoved(boardState: List<Int>, startingHole: Int): Int {
             return boardState[startingHole]
         }
 
-        /*
+        /**
         Computes the landing hole index for a given move
          */
         fun computeLandingHole(boardState: List<Int>, startingHole: Int): Int {
@@ -148,7 +148,9 @@ class ComputerPlayer {
         // cache for memoization of pre-calculated board states
         private val cache = mutableMapOf<Triple<List<Int>,Int,Int>, Pair<Int,Int>>()
 
-        // Calculates the next move for the hard computer player
+        /**
+         *  Calculates the next move for the hard computer player
+         */
         fun hard(boardState: List<Int>): Int {
             var depth = 6
             if (firstTurn) {
@@ -158,12 +160,12 @@ class ComputerPlayer {
             return minimax(boardState, 1, 6, -100000, 10000).second
         }
 
-        /*
+        /**
          Minimax algorithm that returns a pair with the best score, best move for a given board state
          Includes an adjustable depth and alpha/beta parameters for pruning
          Also utilizes memoization to save time
 
-         Source for minimax: //TODO add that yt video link 
+         Source for minimax: //TODO add that yt video link
          Source for alpha beta pruning: https://mathspp.com/blog/minimax-algorithm-and-alpha-beta-pruning
          */
         fun minimax(boardState : List<Int>, currentPlayer : Int, depth: Int, alpha: Int, beta: Int) : Pair<Int, Int> {
@@ -234,7 +236,7 @@ class ComputerPlayer {
             }
         }
 
-        /*
+        /**
         Helper for minimax that calculates the board state after a given move
          */
         fun performMove(boardCopy: MutableList<Int>, hole: Int, currentPlayer: Int) : Boolean {
@@ -311,7 +313,7 @@ class ComputerPlayer {
             }
         }
 
-        /*
+        /**
          Evaluation function for the minimax algorithm, returns ai score - player score
          */
         fun evaluateScore(boardState: List<Int>): Int {

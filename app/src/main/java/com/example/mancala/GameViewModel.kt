@@ -1,3 +1,7 @@
+/**
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
 
 import android.util.Log
@@ -20,7 +24,14 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
-// Store the position of marbles, scores, and game state for persistence
+/**
+ * This class, in conjunction with the computer player class, handles all of the backend logic for the game.
+ *
+ * Stores the position of marbles, scores, and game state for persistence. Calls upon methods in the ComputerPlayer.kt
+ * class to calculate the next computer move for the specified difficulty. Emits to shared flows so the game fragment knows
+ * when to trigger animation events. Takes in an ioDispatcher for testing purposes.
+ *
+ */
 class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel() {
 
     private val _playerScore = MutableStateFlow(0)
@@ -80,7 +91,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         }
     }
 
-    /* callback for when a player clicks on a hole.
+    /** callback for when a player clicks on a hole.
     1. If the hole contains no marbles, do nothing
     2. If the hole does have marbles, add 1 to the next x
     indices of the list
@@ -283,7 +294,7 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
         }
     }
 
-    /*
+    /**
     This method checks to see if there was a winner and if so, moves all remaining marbles on
     the non-empty side of the board to their respective store. A moveMarbleEvent emit is
     sent for each of these moves, so in the ui, all marbles can be animated individually.
@@ -327,7 +338,10 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             _winEvent.emit(winner)
         }
     }
-    // TODO make sure we can't cause an infinite loop here
+
+    /**
+     * Calls the methods in the ComputerPlayer class to calculate the next computer move.
+     */
     private fun calculateComputerMove() : Int {
 
         val noPossibleMoves = (7..12).all { marbles.value[it] == 0 }
@@ -347,6 +361,9 @@ class GameViewModel(private val ioDispatcher: CoroutineDispatcher) : ViewModel()
             move
     }
 
+    /**
+     * Logs the board state to the Log Cat for debugging purposes
+     */
     private fun logBoardState(tag: String = "GameViewModel") {
         moveCount++
         val b = marbles.value

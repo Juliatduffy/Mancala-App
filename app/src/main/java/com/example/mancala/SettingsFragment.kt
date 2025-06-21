@@ -1,16 +1,22 @@
+/**
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mancala.databinding.SettingsFragmentBinding
 
+/**
+ * Fragment for the settings page, stores the first move choice in the home vm.
+ * Uses an android slider to allow the user to choose who goes first
+ */
 class SettingsFragment: Fragment() {
 
     private val vm: HomeViewModel by activityViewModels()

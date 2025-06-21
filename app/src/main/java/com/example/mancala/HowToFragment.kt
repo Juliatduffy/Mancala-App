@@ -1,3 +1,7 @@
+/**
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
 
 import android.os.Bundle
@@ -8,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.mancala.databinding.FragmentHowToBinding
 
+/**
+ * This is the fragment for the how to page.
+ */
 class HowToFragment : Fragment() {
 
     private var _binding: FragmentHowToBinding? = null

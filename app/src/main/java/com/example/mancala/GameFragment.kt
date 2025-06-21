@@ -1,3 +1,7 @@
+/**
+Author: Julia Duffy
+Last Edited: 6/20/2025
+ */
 package com.example.mancala
 
 import androidx.fragment.app.viewModels
@@ -33,18 +37,30 @@ import androidx.fragment.app.activityViewModels
 import kotlin.math.min
 
 
-// Front end stuff for the game
+/**
+ * This class implements the front-end logic for the Mancala game screen. Marble animations are
+ * triggered by events that are collected from the game view model. All of the holes on the board
+ * have counts that display how many marbles there are in that hole. Also, there are messages that
+ * are displayed at the top of the screen that describe each step of the game to the user.
+ */
 class GameFragment : Fragment() {
+    // Stores the game settings (right now this is just the first move choice)
     private val homeViewModel: HomeViewModel by activityViewModels()
+    // Stores a reference to the game vm which contains the majority of the game logic.
     private val viewModel: GameViewModel by viewModels {
         GameViewModelFactory(Dispatchers.Main)
     }
+    // view binding stuff
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
+    // List of the hole ui elements
     private lateinit var holes: List<FrameLayout>
+    // The ui "counts" displayes on the screen
     private lateinit var holeCounts:List<TextView>
+    // Marble size
     private val marbleSizeDp = 30
 
+    // All of the animation events
     private sealed class AnimationEvent {
         data class Move(val fromPit: Int, val toPit: Int) : AnimationEvent()
         data class Capture(val landingPit: Int, val storePit: Int) : AnimationEvent()
@@ -52,7 +68,6 @@ class GameFragment : Fragment() {
         data object PlayerTurn : AnimationEvent()
         data class GameOver(val winner: Int) : AnimationEvent()
         data object EndOfGame : AnimationEvent()
-
     }
 
     override fun onCreateView(
@@ -66,7 +81,6 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // store references to all of the holes
         holes = listOf(
             binding.pit0,
@@ -84,6 +98,7 @@ class GameFragment : Fragment() {
             binding.pit12,
             binding.pit13
         )
+        // store references to all hole count ui elements
         holeCounts = listOf(
             binding.hole0Count,
             binding.hole1Count,
@@ -100,6 +115,7 @@ class GameFragment : Fragment() {
             binding.hole12Count,
             binding.leftStoreCount
         )
+        // difficulty passed in via nav args
         val difficulty = arguments?.getString("difficulty") ?: "easy"
 
         // populate the board with 4 marbles / hole at the beginning of the game
@@ -123,6 +139,7 @@ class GameFragment : Fragment() {
                 }
             }
         }
+        // nifty way to collect and respond to a bunch of different animation events at once
         val animEvents: Flow<AnimationEvent> = merge(
             viewModel.moveMarbleEvent.map { (from, to) -> AnimationEvent.Move(from, to) },
             viewModel.playerCaptureEvent.map { (landing, store) -> AnimationEvent.Capture(landing, store) },
@@ -137,6 +154,7 @@ class GameFragment : Fragment() {
         }
         viewModel.startGame(difficulty, homeViewModel.firstMove)
 
+        // collect emits from the vm to trigger animations
         lifecycleScope.launch {
             animEvents.collect { event ->
                 when (event) {
@@ -193,6 +211,9 @@ class GameFragment : Fragment() {
         }
     }
 
+    /**
+     * Sets up the board with 4 marbles / hole
+     */
     private fun redrawAllPits(counts: List<Int>) {
         if (::holes.isInitialized.not() || counts.size < holes.size) return
         val sizePx = (marbleSizeDp * resources.displayMetrics.density).toInt()
@@ -214,9 +235,12 @@ class GameFragment : Fragment() {
             }
         }
     }
-    // needed help with this from chatgpt
+    /**
+     * Animate a single marble from pit a to pit b
+     * Full disclaimer chatGPT helped me a lot with this one
+    */
     private suspend fun animateSingleMarbleMove(fromPit: Int, toPit: Int, speed: Float = 1f ) =
-        suspendCancellableCoroutine<Unit> { cont ->
+        suspendCancellableCoroutine { cont ->
             val overlay = binding.animationOverlay
             if (fromPit !in holes.indices || toPit !in holes.indices) {
                 cont.resume(Unit)
@@ -225,12 +249,8 @@ class GameFragment : Fragment() {
 
             // screen coords
             val overlayLoc = IntArray(2).also { overlay.getLocationOnScreen(it) }
-            val fromView = holes[fromPit]
             val toView = holes[toPit]
-            val fromLoc = IntArray(2).also { fromView.getLocationOnScreen(it) }
             val toLoc = IntArray(2).also { toView.getLocationOnScreen(it) }
-            val fromCenterX = fromLoc[0] + fromView.width / 2f
-            val fromCenterY = fromLoc[1] + fromView.height / 2f
             val toCenterX = toLoc[0] + toView.width / 2f
             val toCenterY = toLoc[1] + toView.height / 2f
 

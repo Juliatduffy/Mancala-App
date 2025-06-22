@@ -2,7 +2,8 @@
 
 Hello! This is a Mancala app where users can play against the computer at three difficulty levels- easy, medium and hard. The app features marble animations, live scoring, a how to play page, first-move settings, and a different computer player algorithm for each level. 
 
-**Demo Video:** https://github.com/Juliatduffy/Mancala/blob/master/Mancala-Demo-Vid.mp4
+**Demo Video:** https://github.com/Juliatduffy/Mancala/blob/master/Mancala-Demo-Vid.mp4 <br>
+
 # Features
 
 ### Computer Player Algorithms
@@ -47,7 +48,16 @@ Hello! This is a Mancala app where users can play against the computer at three 
   - `nav_graph.xml`
 - **`app/src/main/res/drawable/`**
   - board images, marble assets, hole images
- 
+
+# Screenshots
+
+<img src="assets/home.png" alt="Home Screen" width="600"/>
+<img src="assets/how-to.png" alt="How-To Page" width="600"/>
+<img src="assets/settings.png" alt="Settings" width="600"/>
+<img src="assets/game.png" alt="In-Game Board" width="600"/>
+<img src="assets/captions.png" alt="End-Of-Game Collection" width="600"/>
+<img src="assets/game-over.png" alt="Game Over Screen" width="600"/>
+
 # Credits
 
 ## Author

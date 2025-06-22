@@ -144,7 +144,7 @@ class ComputerPlayer {
         //////////////////////////////////////////////////////////////////////////////////////////
 
         // Boolean to represent whether this is the first turn of the algorithm or not.
-        private var firstTurn = true
+        private var reduceLagCounter = 2
         // cache for memoization of pre-calculated board states
         private val cache = mutableMapOf<Triple<List<Int>,Int,Int>, Pair<Int,Int>>()
 
@@ -152,12 +152,12 @@ class ComputerPlayer {
          *  Calculates the next move for the hard computer player
          */
         fun hard(boardState: List<Int>): Int {
-            var depth = 6
-            if (firstTurn) {
-                depth = 4
-                firstTurn = false
+            var depth = 5
+            if (reduceLagCounter != 0) {
+                reduceLagCounter--
+                depth = 3
             }
-            return minimax(boardState, 1, 6, -100000, 10000).second
+            return minimax(boardState, 1, depth, -100000, 10000).second
         }
 
         /**

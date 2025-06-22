@@ -12,6 +12,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="30dp"
     android:background="@drawable/brown_background">
 
 
@@ -19,8 +20,8 @@
         android:id="@+id/backButtonGame"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         android:background="@android:color/transparent"
@@ -568,17 +569,16 @@
         android:id="@+id/pit1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="pit1"
+        android:layout_marginVertical="12dp"
+        android:background="@drawable/hole2"
         android:clickable="true"
+        android:contentDescription="pit1"
         android:focusable="true"
-                android:background="@drawable/hole2"
-android:layout_marginVertical="12dp"
         android:foreground="?attr/selectableItemBackground"
-        app:layout_constraintStart_toStartOf="@id/pit7_left"
+        app:layout_constraintBottom_toBottomOf="@id/pit7_bottom"
         app:layout_constraintEnd_toStartOf="@id/pit7_right"
-        app:layout_constraintTop_toTopOf="@id/pit7_top"
-        app:layout_constraintBottom_toBottomOf="@id/pit7_bottom">
-        </FrameLayout>
+        app:layout_constraintStart_toStartOf="@+id/pit1_left"
+        app:layout_constraintTop_toTopOf="@id/pit7_top"></FrameLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/pit8_left"
@@ -768,7 +768,7 @@ android:layout_marginVertical="12dp"
         android:textSize="35sp"
         android:textStyle="bold"
         android:fontFamily="@font/averia_serif_libre"
-        android:text="Player Turn"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/guide_top_row"
         app:layout_constraintEnd_toStartOf="@+id/pit3_right"
         app:layout_constraintStart_toStartOf="@+id/pit2_left"

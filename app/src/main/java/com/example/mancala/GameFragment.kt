@@ -55,10 +55,10 @@ class GameFragment : Fragment() {
     private val binding get() = _binding!!
     // List of the hole ui elements
     private lateinit var holes: List<FrameLayout>
-    // The ui "counts" displayes on the screen
+    // The ui "counts" displays on the screen
     private lateinit var holeCounts:List<TextView>
     // Marble size
-    private val marbleSizeDp = 30
+    private val marbleSizeDp = 25
 
     // All of the animation events
     private sealed class AnimationEvent {
@@ -81,6 +81,7 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         // store references to all of the holes
         holes = listOf(
             binding.pit0,
@@ -153,6 +154,9 @@ class GameFragment : Fragment() {
             findNavController().navigate(R.id.homeFragment)
         }
         viewModel.startGame(difficulty, homeViewModel.firstMove)
+        if(viewModel.currentPlayer.value == 0)
+            binding.gameCaptions.text = "Player Turn"
+        else binding.gameCaptions.text = "Computer Turn"
 
         // collect emits from the vm to trigger animations
         lifecycleScope.launch {
@@ -228,8 +232,8 @@ class GameFragment : Fragment() {
                     layoutParams = FrameLayout.LayoutParams(sizePx, sizePx).apply {
                         gravity = Gravity.CENTER
                     }
-                    translationX = Random.nextInt(-40, 40).toFloat()
-                    translationY = Random.nextInt(-40, 40).toFloat()
+                    translationX = Random.nextInt(-20, 20).toFloat()
+                    translationY = Random.nextInt(-20, 20).toFloat()
                 }
                 container.addView(marble)
             }

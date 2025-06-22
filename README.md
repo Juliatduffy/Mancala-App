@@ -2,7 +2,7 @@
 
 Hello! This is a Mancala app where users can play against the computer at three difficulty levels- easy, medium and hard. The app features marble animations, live scoring, a how to play page, first-move settings, and a different computer player algorithm for each level. 
 
-**Demo Video: __**
+**Demo Video:** https://github.com/Juliatduffy/Mancala/blob/master/Mancala-Demo-Vid.mp4
 # Features
 
 ### Computer Player Algorithms

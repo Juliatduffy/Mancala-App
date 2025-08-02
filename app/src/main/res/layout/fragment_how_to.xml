@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/averia_serif_libre"
-                android:text="Get more stones in your mancala (large pit on the right of the board) than your opponent."
+                android:text="Get more stones in your store (large pit on the right of the board) than your opponent (their store is on the left)."
                 android:textSize="18sp"
                 android:paddingTop="4dp"
                 android:textColor="#fff" />
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/averia_serif_libre"
                 android:paddingTop="4dp"
-                android:text="Each player has six small pits in front of them and one mancala (large pit) on their right. Each hole starts with 4 stones. Stores start empty. "
+                android:text="Each player has six small pits in front of them and a store on their right. Each hole starts with 4 stones. Stores start empty. "
                 android:textColor="#fff"
                 android:textSize="18sp" />
             <!-- The Basics -->

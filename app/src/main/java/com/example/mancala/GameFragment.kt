@@ -245,6 +245,12 @@ class GameFragment : Fragment() {
     */
     private suspend fun animateSingleMarbleMove(fromPit: Int, toPit: Int, speed: Float = 1f ) =
         suspendCancellableCoroutine { cont ->
+
+            if (!isAdded || view == null || !::holes.isInitialized) {
+                cont.resume(Unit)
+                return@suspendCancellableCoroutine
+            }
+
             val overlay = binding.animationOverlay
             if (fromPit !in holes.indices || toPit !in holes.indices) {
                 cont.resume(Unit)
@@ -262,6 +268,11 @@ class GameFragment : Fragment() {
             val sizePx = (marbleSizeDp * resources.displayMetrics.density).toInt()
             val half = sizePx / 2
             val marbleView = holes[fromPit].getChildAt(holes[fromPit].childCount - 1)
+            if (marbleView == null) {
+                cont.resume(Unit)
+                return@suspendCancellableCoroutine
+            }
+            marbleView.elevation = 10f
             val marblePos = IntArray(2).also { marbleView.getLocationOnScreen(it) }
             val startX = (marblePos[0] - overlayLoc[0]).toFloat()
             val startY = (marblePos[1] - overlayLoc[1]).toFloat()
@@ -295,6 +306,11 @@ class GameFragment : Fragment() {
                 interpolator = AccelerateDecelerateInterpolator()
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
+                        // check to prevent crashes
+                        if (!isAdded || view == null) {
+                            cont.resume(Unit)
+                            return
+                        }
                         // cleanup and update pits
                         overlay.removeView(flyingMarble)
                         holes[fromPit]
@@ -305,7 +321,7 @@ class GameFragment : Fragment() {
                             layoutParams = FrameLayout.LayoutParams(sizePx, sizePx).apply {
                                 gravity = Gravity.CENTER
                                 translationX = Random.nextInt(-20, 20).toFloat()
-                                translationY = Random.nextInt(-20, 20).toFloat()
+                                translationY = Random.nextInt(-10, 10).toFloat()
                             }
                         })
                         cont.resume(Unit)
